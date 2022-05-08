@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .scale-md {
+    @apply hover:scale-[103%] active:scale-[100%] transition-transform duration-100;
+  }
+}

@@ -1,14 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from '@pages/Home';
 
 const Routers = () => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<h1 className="text-4xl text-red-500">home</h1>} />
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
 
 export default Routers;
