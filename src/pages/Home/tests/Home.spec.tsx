@@ -2,7 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import Home from '..';
 import { render } from './test.utils';
-import { screen } from '@testing-library/react';
+import { getByRole, screen } from '@testing-library/react';
 import { isEditable } from '@testing-library/user-event/dist/types/utils';
 
 describe('Home', () => {
@@ -105,5 +105,46 @@ describe('Home', () => {
       const isChecked = screen.queryByText('✓');
       expect(isChecked).toBeNull;
     }
+  });
+
+  it.only('should clean filter condition', async () => {
+    render(<Home />);
+
+    const filterButton = screen.getByRole('button', { name: 'Filter' });
+    await userEvent.click(filterButton);
+
+    const toHangleGenres = ['액션', '멜로', 'SF', '스릴', '감동', '애니'];
+    for (const genre of toHangleGenres) {
+      const checkButton = await screen.findByRole('checkbox', { name: genre });
+      await userEvent.click(checkButton);
+      screen.getByText('✓');
+
+      const cancel = screen.getByRole('button', { name: '취소' });
+      await userEvent.click(cancel);
+      await userEvent.click(filterButton);
+
+      const isChecked = screen.queryByRole('✓');
+      expect(isChecked).toBeNull;
+    }
+
+    for (let i = 1; i < 11; i++) {
+      const popularity = screen.getByText(i);
+      await userEvent.click(popularity);
+
+      const cancel = screen.getByRole('button', { name: '취소' });
+      await userEvent.click(cancel);
+      await userEvent.click(filterButton);
+
+      const isChecked = screen.queryByText(i);
+      expect(isChecked).toBeNull;
+    }
+
+    const switchButton = screen.getByRole('checkbox', { name: 'Movie' });
+    await userEvent.click(switchButton);
+    const cancel = screen.getByRole('button', { name: '취소' });
+    await userEvent.click(cancel);
+    await userEvent.click(filterButton);
+    const isSiwtched = screen.queryByRole('checkbox', { name: 'Movie' });
+    expect(isSiwtched).toBeNull;
   });
 });
