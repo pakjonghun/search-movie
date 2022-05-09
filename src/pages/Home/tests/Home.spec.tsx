@@ -107,7 +107,7 @@ describe('Home', () => {
     }
   });
 
-  it.only('should clean filter condition', async () => {
+  it('should clean filter condition', async () => {
     render(<Home />);
 
     const filterButton = screen.getByRole('button', { name: 'Filter' });

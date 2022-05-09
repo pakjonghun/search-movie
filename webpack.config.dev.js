@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { merge } = require('webpack-merge');
 const commonConfig = require('./webpack.config.common');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = merge(commonConfig, {
   devtool: 'source-map',
@@ -23,11 +24,11 @@ module.exports = merge(commonConfig, {
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
 
-      {
-        test: /\.js$/,
-        enforce: 'pre',
-        loader: 'source-map-loader',
-      },
+      // {
+      //   test: /\.js$/,
+      //   enforce: 'pre',
+      //   loader: 'source-map-loader',
+      // },
     ],
   },
   optimization: {
@@ -39,6 +40,7 @@ module.exports = merge(commonConfig, {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new Dotenv(),
     // new BundleAnalyzerPlugin(),
   ],
 });
