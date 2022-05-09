@@ -1,7 +1,6 @@
+import React, { useCallback } from 'react';
 import { useHomeContext } from '@contexts/home';
 import { ACTIONS } from '@contexts/home/homeActions';
-import { joinClass } from '@utils/styleUtil';
-import React, { useCallback } from 'react';
 
 const genres = ['Action', 'Melo', 'SF', 'Thrill', 'Human', 'Ani'];
 const toHangleGenres = ['액션', '멜로', 'SF', '스릴', '감동', '애니'];

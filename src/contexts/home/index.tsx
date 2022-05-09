@@ -2,7 +2,7 @@ import React, { createContext, FC, useContext, useMemo, useReducer } from 'react
 import homeReducer from './homeReducers';
 import { CreateHomeDispatchContext, CreateHomeStateContext, Dispatch, State } from './types';
 
-const initialState = {
+export const initialState = {
   isFilterOpen: false,
   isTVON: false,
   genres: [],

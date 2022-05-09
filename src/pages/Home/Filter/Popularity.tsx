@@ -17,8 +17,6 @@ const Popularity = () => {
   const min = Math.min(...popularityList);
   const max = Math.max(...popularityList);
 
-  console.log(min, max);
-
   return (
     <div className="relative flex w-full items-center">
       <div
@@ -27,7 +25,7 @@ const Popularity = () => {
       />
       <div
         style={{ width: `${(max - 1) * 10 + 5}%` }}
-        className="absolute top-1/2 -translate-y-1/2 h-1 bg-red-600 z-20"
+        className="absolute top-1/2 -translate-y-1/2 h-1 bg-blue-400 z-20"
       />
       <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 bg-gray-300" />
       <ul className="flex justify-between w-full">
@@ -37,8 +35,8 @@ const Popularity = () => {
               onClick={() => onPopularityClick(v + 1)}
               key={v}
               className={joinClass(
-                'flex items-center justify-center w-5 aspect-square text-xs text-gray-50 rounded-full cursor-pointer z-40',
-                min <= v + 1 && v + 1 <= max ? 'bg-red-400' : 'bg-gray-300',
+                'flex items-center justify-center w-5 sm:w-6 aspect-square text-xs text-gray-50 rounded-full cursor-pointer z-40',
+                min <= v + 1 && v + 1 <= max ? 'bg-blue-400' : 'bg-gray-300',
               )}
             >
               {v + 1}

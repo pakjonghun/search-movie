@@ -7,7 +7,7 @@ const props = {
   children: <></>,
 };
 
-describe('Main Layout test', () => {
+describe('MainLayout', () => {
   it('it should have title and no back-button', () => {
     render(<MainLayout {...props} />);
 
