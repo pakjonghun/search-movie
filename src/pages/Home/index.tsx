@@ -1,17 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import MainLayout from '@components/MainLayout';
 import SearchInput from './SearchInput';
 import Filter from './Filter';
-import { readNextDescriptor } from '@testing-library/user-event/dist/types/utils';
-
-type Response<T> = {
-  page?: number;
-  results?: T;
-  total_pages?: number;
-  total_results?: number;
-  status_message?: string;
-  status_code?: number;
-};
+import Content from './Content';
 
 const Home = () => {
   return (
@@ -20,13 +11,9 @@ const Home = () => {
         <SearchInput classes="sm:w-96" />
         <Filter />
       </div>
-      <article>
-        <ul>
-          {/* {movies.map((v) => (
-            <li key={v.id}>{v.title}</li>
-          ))} */}
-        </ul>
-      </article>
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <Content />
+      </React.Suspense>
     </MainLayout>
   );
 };
