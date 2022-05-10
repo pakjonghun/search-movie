@@ -5,7 +5,7 @@ import { isFilterOpenState } from '@recoil/atoms/filterAtom';
 const FilterButton = () => {
   const setIsFilterOpen = useSetRecoilState(isFilterOpenState);
   const onFilterClick = useCallback(() => {
-    setIsFilterOpen(true);
+    setIsFilterOpen((pre) => !pre);
   }, [setIsFilterOpen]);
 
   return (
