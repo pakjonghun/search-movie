@@ -4,11 +4,11 @@ import Genre from './Genre';
 import Popularity from './Popularity';
 import FilterItem from './FilterItem';
 import ApplyButtons from './ApplyButtons';
-import { useHomeStateContext } from '@contexts/home';
-import { joinClass } from '@utils/styleUtil';
+import { useRecoilValue } from 'recoil';
+import { isFilterOpenState } from '@recoil/atoms/filterAtom';
 
 const Filter = () => {
-  const state = useHomeStateContext();
+  const isFilterOpen = useRecoilValue(isFilterOpenState);
 
   const filters = useMemo(
     () => [
@@ -18,7 +18,7 @@ const Filter = () => {
     ],
     [],
   );
-  if (!state.isFilterOpen) return null;
+  if (!isFilterOpen) return null;
   return (
     <div className="mt-1 bg-gray-50 shadow-md origin-top">
       <ul className="divide-y-2">

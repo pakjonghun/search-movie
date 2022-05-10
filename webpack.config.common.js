@@ -12,7 +12,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts', 'json'],
     alias: {
-      '@contexts': path.join(__dirname, 'src', 'contexts'),
+      '@recoil': path.join(__dirname, 'src', 'recoil'),
       '@hooks': path.join(__dirname, 'src', 'hooks'),
       '@utils': path.join(__dirname, 'src', 'utils'),
       '@pages': path.join(__dirname, 'src', 'pages'),

@@ -1,13 +1,12 @@
 import React, { memo, useCallback } from 'react';
-import { ACTIONS } from '@contexts/home/homeActions';
-import { useHomeDispatchContext } from '@contexts/home';
+import { useSetRecoilState } from 'recoil';
+import { isFilterOpenState } from '@recoil/atoms/filterAtom';
 
 const FilterButton = () => {
-  const dispatch = useHomeDispatchContext();
-
+  const setIsFilterOpen = useSetRecoilState(isFilterOpenState);
   const onFilterClick = useCallback(() => {
-    dispatch(ACTIONS.TOGGLEFILTER);
-  }, [dispatch]);
+    setIsFilterOpen(true);
+  }, [setIsFilterOpen]);
 
   return (
     <button

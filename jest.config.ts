@@ -89,7 +89,7 @@ export default {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '@contexts(.*)$': '<rootDir>/src/contexts$1',
+    '@recoil(.*)$': '<rootDir>/src/recoil$1',
     '@hooks(.*)$': '<rootDir>/src/hooks$1',
     '@utils(.*)$': '<rootDir>/src/utils$1',
     '@components(.*)$': '<rootDir>/src/components$1',
@@ -179,9 +179,9 @@ export default {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  // transform: {
-  //     '\\.[jt]sx?$': 'babel-jest',
-  // },
+  transform: {
+    '\\.[jt]sx?$': 'babel-jest',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   //   transformIgnorePatterns: []

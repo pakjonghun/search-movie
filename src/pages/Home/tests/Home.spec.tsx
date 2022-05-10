@@ -1,9 +1,8 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import Home from '..';
-import { render } from './test.utils';
-import { getByRole, screen } from '@testing-library/react';
-import { isEditable } from '@testing-library/user-event/dist/types/utils';
+
+import { screen, render } from './test.utils';
 
 describe('Home', () => {
   it('should toggle Filter', async () => {

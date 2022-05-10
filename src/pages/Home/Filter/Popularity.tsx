@@ -1,21 +1,28 @@
 import React, { useCallback } from 'react';
 import { joinClass } from '@utils/styleUtil';
-import { useHomeContext } from '@contexts/home';
-import { ACTIONS } from '@contexts/home/homeActions';
+import { useRecoilState } from 'recoil';
+import { popularityState } from '@recoil/atoms/filterAtom';
 
 const Popularity = () => {
-  const [state, dispatch] = useHomeContext();
+  const [popularityList, setPopularityList] = useRecoilState(popularityState);
+
+  const min = Math.min(...popularityList);
+  const max = Math.max(...popularityList);
 
   const onPopularityClick = useCallback(
     (popularity: number) => {
-      dispatch(ACTIONS.ADDPOPULARITY(popularity));
-    },
-    [dispatch],
-  );
+      setPopularityList((pre) => {
+        const isInclude = pre.includes(popularity);
+        const newPopularityList = isInclude
+          ? pre.filter((p) => p !== popularity)
+          : [...pre, popularity];
 
-  const popularityList = state.popularity;
-  const min = Math.min(...popularityList);
-  const max = Math.max(...popularityList);
+        return newPopularityList;
+      });
+    },
+
+    [setPopularityList],
+  );
 
   return (
     <div className="relative flex w-full items-center">
@@ -29,17 +36,19 @@ const Popularity = () => {
       />
       <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 bg-gray-300" />
       <ul className="flex justify-between w-full">
-        {Array.from(Array(10).keys()).map((v) => {
+        {Array.from(Array(10).keys()).map((popularity) => {
+          const isSelected = min <= popularity + 1 && popularity + 1 <= max;
+
           return (
             <li
-              onClick={() => onPopularityClick(v + 1)}
-              key={v}
+              key={popularity}
+              onClick={() => onPopularityClick(popularity + 1)}
               className={joinClass(
                 'flex items-center justify-center w-5 sm:w-6 aspect-square text-xs text-gray-50 rounded-full cursor-pointer z-40',
-                min <= v + 1 && v + 1 <= max ? 'bg-blue-400' : 'bg-gray-300',
+                isSelected ? 'bg-blue-400' : 'bg-gray-300',
               )}
             >
-              {v + 1}
+              {popularity + 1}
             </li>
           );
         })}
