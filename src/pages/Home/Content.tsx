@@ -31,29 +31,22 @@ const Content = () => {
 
   return (
     <article>
-      <button
-        onClick={() => {
-          setPage((pre) => pre + 1);
-        }}
-      >
-        click
-      </button>
       <ul className="relative h-[200px] bg bg-red-100 overflow-y-auto">
         {movies.map((v) => (
-          <VirtualizedItem height={24} key={uuidv4()}>
+          <VirtualizedItem offset={500} height={24} key={uuidv4()}>
             <>{v.title}</>
           </VirtualizedItem>
         ))}
 
-        {/* <div
+        <div
           ref={setRef}
           className={joinClass(
-            'bg-blue-500 h-full w-full',
+            'bg-blue-500 h-full w-1/2',
             movieQuery.state === 'loading' ? 'bottom-0 absolute' : '',
           )}
         >
           loader
-        </div> */}
+        </div>
       </ul>
     </article>
   );

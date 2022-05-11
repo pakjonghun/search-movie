@@ -2,10 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 
 interface props {
   children: React.ReactNode;
-  height?: number;
+  height: number;
+  offset?: number;
 }
 
-const VirtualizedItem: FC<props> = ({ children, height }) => {
+const VirtualizedItem: FC<props> = ({ children, height, offset = 0 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const [itemRef, setItemRef] = useState<HTMLElement | null>(null);
@@ -14,7 +15,7 @@ const VirtualizedItem: FC<props> = ({ children, height }) => {
     if (itemRef) {
       const options = {
         root: null,
-        rootMargin: '0px',
+        rootMargin: `${offset}px 0px ${offset}px 0px`,
         threshold: 0,
       };
 
