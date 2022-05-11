@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import Home from '..';
 
 import { screen, render } from './test.utils';
+import ContentSelector from '../ContentSelector';
+import { contentSelector } from '../constants';
 
 describe('Home', () => {
   beforeEach(() => {
@@ -176,5 +178,17 @@ describe('Home', () => {
     const isSiwtched = screen.queryByRole('checkbox', { name: 'TV' });
     expect(isSiwtched).not.toBeInTheDocument();
     screen.getByRole('checkbox', { name: 'Movie' });
+  });
+});
+
+describe('contentSelector', () => {
+  it.only('should switch content', async () => {
+    render(<ContentSelector />);
+
+    for (const content of ['구분없음', '평점구분', '장르구분', '개봉날짜']) {
+      const label = screen.getByText(content);
+      await userEvent.click(label);
+      expect(label).toHaveClass('bg-blue-500');
+    }
   });
 });

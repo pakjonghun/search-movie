@@ -1,9 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RadioButton from '.';
-import uuid from 'uuid';
-
-const mockid = jest.mock('uuid');
 
 const props = {
   id: 'id',
@@ -12,11 +9,12 @@ const props = {
   indicator: 'indocator',
 };
 
-test.skip('title should be in', () => {
+test('title should be in', () => {
   const { id, value, name, indicator } = props;
   render(<RadioButton {...props} />);
-  // jest.spyOn(uuid, 'v4').mockResolvedValue('uuid');
 
-  const idComponent = screen.getByRole('radio');
-  expect(idComponent.id).toBe(props.id);
+  const idComponent = screen.getByRole('radio', { name: indicator }) as HTMLInputElement;
+  expect(idComponent.id).toBe(id);
+  expect(idComponent.value).toBe(value);
+  expect(idComponent.name).toBe(name);
 });

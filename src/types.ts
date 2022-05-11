@@ -1,3 +1,5 @@
+export type SelectValue = 'none' | 'popularity' | 'genre' | 'date';
+
 export type Response<T> = {
   page?: number;
   results?: T;

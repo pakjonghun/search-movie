@@ -5,13 +5,11 @@ interface props {
   id: string;
   value: string;
   indicator: string | React.ReactNode;
+  classes?: string;
 }
-const RadioButton: FC<props> = ({ name, id, value, indicator }) => {
+const RadioButton: FC<props> = ({ name, id, value, indicator, classes }) => {
   return (
-    <label
-      htmlFor={id}
-      className="hover:text-gray-50 hover:bg-blue-500 py-2 px-4 scale-md cursor-pointer"
-    >
+    <label htmlFor={id} className={classes ? classes : ''}>
       {indicator}
       <input type="radio" name={name} id={id} value={value} className="hidden" />
     </label>
