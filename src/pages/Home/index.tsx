@@ -11,9 +11,7 @@ const Home = () => {
         <SearchInput classes="sm:w-96" />
         <Filter />
       </div>
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <Content />
-      </React.Suspense>
+      <Content />
     </MainLayout>
   );
 };

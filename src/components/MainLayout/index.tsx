@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import Navigation from './Navigation';
-import SearchInput from '../../pages/Home/SearchInput';
 
 interface props {
   title: string;
@@ -14,7 +13,7 @@ const MainLayout: FC<props> = ({ title, canBack = false, children }) => {
       <header>
         <Navigation title={title} canBack={canBack} />
       </header>
-      <main className="px-5 py-3">{children}</main>
+      <main className="px-5 py-3 space-y-5">{children}</main>
     </section>
   );
 };

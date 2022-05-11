@@ -1,12 +1,14 @@
+import { joinClass } from '@utils/styleUtil';
 import React, { FC, useEffect, useState } from 'react';
 
 interface props {
   children: React.ReactNode;
   height: number;
   offset?: number;
+  classes?: string;
 }
 
-const VirtualizedItem: FC<props> = ({ children, height, offset = 0 }) => {
+const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const [itemRef, setItemRef] = useState<HTMLElement | null>(null);
@@ -36,7 +38,11 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0 }) => {
     }
   }, [itemRef]);
 
-  return <li ref={setItemRef}>{isVisible ? <>{children}</> : <div style={{ height }} />}</li>;
+  return (
+    <li className={joinClass(classes ? classes : '')} ref={setItemRef}>
+      {isVisible ? <>{children}</> : <div style={{ height }} />}
+    </li>
+  );
 };
 
 export default VirtualizedItem;

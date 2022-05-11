@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import useInfinityScroll from '@hooks/useInfinityScroll';
 import { joinClass } from '@utils/styleUtil';
 import VirtualizedItem from '@components/VirtualizedItem';
+import MovieContent from './MovieContent';
 
 const Content = () => {
   const [movies, setMovies] = useRecoilState(movieState);
@@ -31,10 +32,10 @@ const Content = () => {
 
   return (
     <article>
-      <ul className="relative h-[200px] bg bg-red-100 overflow-y-auto">
-        {movies.map((v) => (
-          <VirtualizedItem offset={500} height={24} key={uuidv4()}>
-            <>{v.title}</>
+      <ul className="relative h-[80vh] space-y-3 overflow-y-auto">
+        {movies.map((movie) => (
+          <VirtualizedItem classes="px-3 py-1" offset={1000} height={160} key={uuidv4()}>
+            <MovieContent movie={movie} />
           </VirtualizedItem>
         ))}
 
@@ -42,7 +43,7 @@ const Content = () => {
           ref={setRef}
           className={joinClass(
             'bg-blue-500 h-full w-1/2',
-            movieQuery.state === 'loading' ? 'bottom-0 absolute' : '',
+            movieQuery.state === 'loading' ? 'bottom-0 absolute' : 'opacity-0',
           )}
         >
           loader

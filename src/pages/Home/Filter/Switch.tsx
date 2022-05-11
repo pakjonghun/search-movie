@@ -16,7 +16,7 @@ const Switch = () => {
   return (
     <label
       className={joinClass(
-        'relative block w-16 px-1 py-1 bg-gray-100 font-medium text-xs rounded-full shadow-md transition-colors duration-100',
+        'relative block w-16 px-1 py-1 font-medium text-xs rounded-full shadow-md transition-colors duration-100',
         !isTvOn ? 'bg-gray-700' : 'bg-blue-500',
       )}
     >
