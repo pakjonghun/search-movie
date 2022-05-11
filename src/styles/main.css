@@ -6,4 +6,8 @@
   .scale-md {
     @apply hover:scale-[102%] active:scale-[100%] transition-transform duration-100;
   }
+
+  .scale-sm {
+    @apply hover:scale-[101%] active:scale-[100%] transition-transform duration-100;
+  }
 }

@@ -5,6 +5,25 @@ import Home from '..';
 import { screen, render } from './test.utils';
 
 describe('Home', () => {
+  beforeEach(() => {
+    jest.mock('uuid', () => {
+      const realModule = jest.requireActual('uuid');
+      return {
+        ...realModule,
+        v4: jest.fn(),
+      };
+    });
+
+    //@ts-ignore
+    window.IntersectionObserver = jest.fn(() => {
+      return {
+        ...window.IntersectionObserver,
+        observe: jest.fn(),
+        disconnect: jest.fn(),
+      };
+    });
+  });
+
   it('should toggle Filter', async () => {
     render(<Home />);
 

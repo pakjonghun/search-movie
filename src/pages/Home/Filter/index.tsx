@@ -18,7 +18,7 @@ const Filter = () => {
     ],
     [],
   );
-  if (!isFilterOpen) return null;
+  if (!isFilterOpen) return <div className="h-[240px] sm:h-[244px] mt-1" />;
   return (
     <div className="mt-1 bg-gray-50 shadow-md origin-top">
       <ul className="divide-y-2">
