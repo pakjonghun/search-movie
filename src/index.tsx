@@ -14,5 +14,6 @@ root.render(
       <Routers />
       <ToastContainer position="top-right" />
     </RecoilRoot>
+    ,
   </React.StrictMode>,
 );

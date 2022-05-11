@@ -10,8 +10,3 @@ export const movieState = atom<Movie[]>({
   key: 'movieState',
   default: [],
 });
-
-export const curMovieState = atom<Movie[]>({
-  key: 'curMovieState',
-  default: [],
-});

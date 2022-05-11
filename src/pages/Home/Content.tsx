@@ -1,45 +1,59 @@
-import React, { useCallback } from 'react';
-import { useRecoilStateLoadable, useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { useCallback, useEffect } from 'react';
+import { useRecoilState, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
 import { getMoviesQuery } from '@recoil/selectors/movieSelector';
 import { moviePage, movieState } from '@recoil/atoms/movieAtom';
 import { v4 as uuidv4 } from 'uuid';
 import useInfinityScroll from '@hooks/useInfinityScroll';
 import { joinClass } from '@utils/styleUtil';
+import VirtualizedItem from '@components/VirtualizedItem';
 
 const Content = () => {
-  const movies = useRecoilValue(movieState);
+  const [movies, setMovies] = useRecoilState(movieState);
   const setPage = useSetRecoilState(moviePage);
-  const [curMovies, setMovie] = useRecoilStateLoadable(getMoviesQuery);
-
+  const movieQuery = useRecoilValueLoadable(getMoviesQuery);
   const callback: IntersectionObserverCallback = useCallback(
-    ([{ isIntersecting }]) => {
-      if (isIntersecting) {
-        setPage((pre) => pre + 1);
-        setMovie(curMovies.contents || []);
-      }
+    (entries) => {
+      entries.forEach((entry) => {
+        if (movies.length && entry.isIntersecting) {
+          setPage((pre) => pre + 1);
+        }
+      });
     },
-    [setPage, curMovies, setMovie],
+    [setPage, movies],
   );
 
+  useEffect(() => {
+    if (movieQuery.state === 'hasValue') {
+      setMovies([...movies, ...movieQuery.contents]);
+    }
+  }, [movieQuery.state]);
   const setRef = useInfinityScroll({ callback });
 
   return (
     <article>
+      <button
+        onClick={() => {
+          setPage((pre) => pre + 1);
+        }}
+      >
+        click
+      </button>
       <ul className="relative h-[200px] bg bg-red-100 overflow-y-auto">
         {movies.map((v) => (
-          <li key={uuidv4()}>{v.title}</li>
+          <VirtualizedItem height={24} key={uuidv4()}>
+            <>{v.title}</>
+          </VirtualizedItem>
         ))}
-        {
-          <div
-            ref={setRef}
-            className={joinClass(
-              'bg-blue-500 h-full w-full',
-              curMovies.state === 'loading' ? 'bottom-0 absolute' : '',
-            )}
-          >
-            loader
-          </div>
-        }
+
+        {/* <div
+          ref={setRef}
+          className={joinClass(
+            'bg-blue-500 h-full w-full',
+            movieQuery.state === 'loading' ? 'bottom-0 absolute' : '',
+          )}
+        >
+          loader
+        </div> */}
       </ul>
     </article>
   );
