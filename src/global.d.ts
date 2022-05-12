@@ -3,3 +3,5 @@ declare namespace NodeJS {
     KEY: string;
   }
 }
+
+declare module '*.jpg';

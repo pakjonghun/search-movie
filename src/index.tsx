@@ -11,9 +11,10 @@ const root = ReactDom.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <Routers />
-      <ToastContainer position="top-right" />
+      <React.Suspense fallback={<div>asdfasdfsdf</div>}>
+        <Routers />
+        <ToastContainer position="top-right" />
+      </React.Suspense>
     </RecoilRoot>
-    ,
   </React.StrictMode>,
 );

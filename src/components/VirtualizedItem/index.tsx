@@ -1,5 +1,5 @@
 import { joinClass } from '@utils/styleUtil';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, forwardRef, useEffect, useState } from 'react';
 
 interface props {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
 
       observer.observe(itemRef);
     }
-  }, [itemRef]);
+  }, [itemRef, offset]);
 
   return (
     <li className={joinClass(classes ? classes : '')} ref={setItemRef}>
@@ -44,5 +44,4 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
     </li>
   );
 };
-
 export default VirtualizedItem;

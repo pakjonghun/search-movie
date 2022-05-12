@@ -17,10 +17,15 @@ module.exports = {
       '@utils': path.join(__dirname, 'src', 'utils'),
       '@pages': path.join(__dirname, 'src', 'pages'),
       '@components': path.join(__dirname, 'src', 'components'),
+      '@assets': path.join(__dirname, 'src', 'assets'),
     },
   },
   module: {
     rules: [
+      {
+        test: /\.jpg/,
+        type: 'asset/resource',
+      },
       {
         test: /\.ts(x?)$/,
         use: [

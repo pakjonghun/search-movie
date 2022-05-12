@@ -7,7 +7,12 @@ interface props {
   callback: IntersectionObserverCallback;
 }
 
-const useInfinityScroll = ({ root = null, rootMargin = '0px', threshold = 0, callback }: props) => {
+const useInfinityScroll = ({
+  root = null,
+  rootMargin = '0px',
+  threshold = 0,
+  callback,
+}: props) => {
   const [target, setTarget] = useState<null | HTMLElement>(null);
 
   const setRef = useCallback((ele: null | HTMLElement) => {
@@ -19,7 +24,6 @@ const useInfinityScroll = ({ root = null, rootMargin = '0px', threshold = 0, cal
     const options = { root, rootMargin, threshold };
     const observer: IntersectionObserver = new IntersectionObserver(callback, options);
     observer.observe(target);
-
     return () => observer.disconnect();
   }, [target, root, rootMargin, threshold, callback]);
 

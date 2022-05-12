@@ -52,6 +52,7 @@
     "baseUrl": "./src" /* Base directory to resolve non-absolute module names. */,
     "paths": {
       "@recoil/*": ["recoil/*"],
+      "@assets/*": ["assets/*"],
       "@hooks/*": ["hooks/*"],
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],

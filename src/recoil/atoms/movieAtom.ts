@@ -1,12 +1,12 @@
 import { atom } from 'recoil';
 import { Movie } from 'types';
 
-export const moviePage = atom({
-  key: 'moviePage',
+export const movieCursor = atom({
+  key: 'movieCursor',
   default: 1,
 });
 
-export const movieState = atom<Movie[]>({
-  key: 'movieState',
+export const allMovies = atom<Movie[]>({
+  key: 'allMovies',
   default: [],
 });

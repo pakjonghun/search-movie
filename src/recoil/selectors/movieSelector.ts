@@ -1,25 +1,48 @@
-import { moviePage } from './../atoms/movieAtom';
+import { movieCursor } from './../atoms/movieAtom';
 import { http } from '../../axiosInstance';
-import { selector } from 'recoil';
+import {
+  noWait,
+  selector,
+  selectorFamily,
+  waitForAll,
+  waitForAllSettled,
+  waitForNone,
+} from 'recoil';
 import { Movie, Response } from 'types';
 
-export const getMoviesQuery = selector<Movie[]>({
+export const getMoviesQuery = selectorFamily({
   key: 'getMoviesQuery',
-  get: async ({ get }) => {
-    const page = get(moviePage);
-    if (!page) return [];
+  get: (cursor: number) => async () => {
     try {
-      if (!get(moviePage)) return [];
       const { data } = await http.get<Response<Movie[]>>('/movie/popular', {
         params: {
-          page,
+          page: cursor,
           api_key: process.env.KEY,
         },
       });
-
       return data.results || [];
     } catch (err) {
       throw 'movie data error';
     }
+  },
+});
+
+export const getAllMovies = selector({
+  key: 'getAllMovies',
+  get: ({ get }) => {
+    const cursors = Array.from(Array(get(movieCursor)).keys(), (c) => c + 1);
+    const a = waitForNone(cursors.map(getMoviesQuery));
+    return a;
+  },
+});
+
+export const getTotalMoviesCount = selector({
+  key: 'getTotalMoviesCount',
+  get: ({ get }) => {
+    const cursor = get(movieCursor);
+    const curMovies = get(noWait(getMoviesQuery(cursor)));
+    return curMovies.state === 'hasValue'
+      ? (cursor - 1) * 20 + curMovies.contents.length
+      : 0;
   },
 });
