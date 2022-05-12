@@ -4,7 +4,7 @@ import ContentByPopularity from './ContentByPopularity';
 import { selectedPopularityState } from '@recoil/atoms/selectionAtom';
 import { getMovieByPopularity } from '@recoil/selectors/selectionSelector';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import MovieContents from '../MovieContents';
+import MovieContents from '../MovieList';
 
 const ContentByPopularities = () => {
   const [popularities, setPopularities] = useRecoilState(selectedPopularityState);

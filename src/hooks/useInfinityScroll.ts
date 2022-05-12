@@ -1,33 +1,32 @@
 import { useState, useEffect, useCallback } from 'react';
 
-interface props {
+interface InfinityOption {
   root?: Element | null;
   rootMargin?: string;
   threshold?: number | number[];
-  callback: IntersectionObserverCallback;
 }
 
+interface props {
+  options?: InfinityOption;
+  callback: IntersectionObserverCallback;
+  target: React.MutableRefObject<HTMLElement | null>;
+  shouldObserve: boolean;
+}
+
+const initialOptions = { root: null, rootMargin: '0px', threshold: 0 };
+
 const useInfinityScroll = ({
-  root = null,
-  rootMargin = '0px',
-  threshold = 0,
+  shouldObserve,
+  target,
+  options = initialOptions,
   callback,
 }: props) => {
-  const [target, setTarget] = useState<null | HTMLElement>(null);
-
-  const setRef = useCallback((ele: null | HTMLElement) => {
-    if (ele) setTarget(ele);
-  }, []);
-
   useEffect(() => {
-    if (!target) return;
-    const options = { root, rootMargin, threshold };
+    if (!target.current || !shouldObserve) return;
     const observer: IntersectionObserver = new IntersectionObserver(callback, options);
-    observer.observe(target);
+    observer.observe(target.current);
     return () => observer.disconnect();
-  }, [target, root, rootMargin, threshold, callback]);
-
-  return setRef;
+  }, [options, target, shouldObserve, callback]);
 };
 
 export default useInfinityScroll;

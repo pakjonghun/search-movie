@@ -1,16 +1,25 @@
-import React, { FC } from 'react';
+import React, {
+  FC,
+  forwardRef,
+  ReactElement,
+  ReactHTMLElement,
+  Ref,
+  useRef,
+} from 'react';
 import { Movie } from 'types';
 import { v4 as uuidv4 } from 'uuid';
-import MovieContent from './MovieContent';
+import MovieContent from './MovieItem';
 
 import VirtualizedItem from '@components/VirtualizedItem';
+import { useRecoilValue } from 'recoil';
+import { isLastMovieItem } from '@recoil/selectors/movieSelector';
 
 interface props {
   movies: Movie[];
   cursor: number;
 }
 
-const MovieContents: FC<props> = ({ movies, cursor }) => {
+const MovieItems: FC<props> = ({ movies, cursor }) => {
   return (
     <>
       {movies.map((movie, index) => (
@@ -21,5 +30,4 @@ const MovieContents: FC<props> = ({ movies, cursor }) => {
     </>
   );
 };
-
-export default MovieContents;
+export default MovieItems;

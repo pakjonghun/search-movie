@@ -3,7 +3,7 @@ import { genreSelector } from '@pages/Home/constants';
 import ContentByGenre from './ContentByGenre';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { selectedGenreState } from '@recoil/atoms/selectionAtom';
-import MovieContents from '../MovieContents';
+import MovieContents from '../MovieList';
 import { getMovieByGenre } from '@recoil/selectors/selectionSelector';
 
 const ContentByGenres = () => {

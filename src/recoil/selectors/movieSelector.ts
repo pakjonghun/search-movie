@@ -1,13 +1,6 @@
 import { movieCursor } from './../atoms/movieAtom';
 import { http } from '../../axiosInstance';
-import {
-  noWait,
-  selector,
-  selectorFamily,
-  waitForAll,
-  waitForAllSettled,
-  waitForNone,
-} from 'recoil';
+import { selector, selectorFamily, waitForNone } from 'recoil';
 import { Movie, Response } from 'types';
 
 export const getMoviesQuery = selectorFamily({
@@ -31,18 +24,25 @@ export const getAllMovies = selector({
   key: 'getAllMovies',
   get: ({ get }) => {
     const cursors = Array.from(Array(get(movieCursor)).keys(), (c) => c + 1);
-    const a = waitForNone(cursors.map(getMoviesQuery));
-    return a;
+    return get(waitForNone(cursors.map(getMoviesQuery)));
   },
 });
 
-export const getTotalMoviesCount = selector({
+const getTotalMoviesCount = selector({
   key: 'getTotalMoviesCount',
   get: ({ get }) => {
     const cursor = get(movieCursor);
-    const curMovies = get(noWait(getMoviesQuery(cursor)));
-    return curMovies.state === 'hasValue'
-      ? (cursor - 1) * 20 + curMovies.contents.length
-      : 0;
+    const curMovies = get(getMoviesQuery(cursor));
+    return (cursor - 1) * 20 + curMovies.length;
   },
+});
+
+export const isLastMovieItem = selectorFamily({
+  key: 'getMovieRef',
+  get:
+    (nth: number) =>
+    ({ get }) => {
+      const totalMoviesCount = get(getTotalMoviesCount);
+      return totalMoviesCount === nth;
+    },
 });

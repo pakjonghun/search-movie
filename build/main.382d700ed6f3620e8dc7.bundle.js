@@ -71,47 +71,6 @@ const http = axios__WEBPACK_IMPORTED_MODULE_0___default().create(config);
 
 /***/ }),
 
-/***/ "./src/components/ErrorBoundary.tsx":
-/*!******************************************!*\
-  !*** ./src/components/ErrorBoundary.tsx ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-
-
-class ErrorBoundary extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
-  state = {
-    hasError: false
-  };
-
-  static getDerivedStateFromError(_) {
-    return {
-      hasError: true
-    };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "Errors");
-    }
-  }
-
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ErrorBoundary);
-
-/***/ }),
-
 /***/ "./src/components/MainLayout/Navigation.tsx":
 /*!**************************************************!*\
   !*** ./src/components/MainLayout/Navigation.tsx ***!
@@ -627,8 +586,9 @@ const MovieContent = ({
   const callback = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        console.log(entry.target);
         fetchMoreMovies();
+        console.log(entry.target);
+        observer.unobserve(entry.target);
       }
     });
   }, [fetchMoreMovies]);
@@ -636,6 +596,7 @@ const MovieContent = ({
     callback
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    ref: totalMovieCount === nth ? setRef : null,
     className: "flex space-x-2  bg-gray-50 shadow-md h-40 border-[1px] rounded-md scale-md overflow-hidden cursor-pointer"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     className: "h-full",
@@ -711,10 +672,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var recoil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! recoil */ "./node_modules/recoil/es/recoil.js");
 /* harmony import */ var _recoil_selectors_movieSelector__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @recoil/selectors/movieSelector */ "./src/recoil/selectors/movieSelector.ts");
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
 /* harmony import */ var _MovieContents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MovieContents */ "./src/pages/Home/Content/MovieContents/MovieContents.tsx");
-/* harmony import */ var _components_ErrorBoundary__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/ErrorBoundary */ "./src/components/ErrorBoundary.tsx");
-
 
 
 
@@ -725,22 +684,29 @@ const Movies = ({
   movies
 }) => {
   const loadableMovies = (0,recoil__WEBPACK_IMPORTED_MODULE_1__.useRecoilValue)(_recoil_selectors_movieSelector__WEBPACK_IMPORTED_MODULE_2__.getAllMovies);
-  console.log(loadableMovies);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ErrorBoundary__WEBPACK_IMPORTED_MODULE_4__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Suspense), {
-    fallback: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Loading")
-  }, loadableMovies.map((loadableMovie, index) => ({
-    hasValue: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_MovieContents__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      cursor: index + 1,
-      key: (0,uuid__WEBPACK_IMPORTED_MODULE_5__["default"])(),
-      movies: loadableMovie.contents
-    }),
-    hasError: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      key: (0,uuid__WEBPACK_IMPORTED_MODULE_5__["default"])()
-    }, "Error"),
-    loading: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      key: (0,uuid__WEBPACK_IMPORTED_MODULE_5__["default"])()
-    }, "Loading")
-  })[loadableMovie.state])));
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, loadableMovies.map((loadableMovie, index) => {
+    switch (loadableMovie.state) {
+      case 'loading':
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+          key: (0,uuid__WEBPACK_IMPORTED_MODULE_4__["default"])()
+        }, "Loading");
+
+      case 'hasError':
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+          key: (0,uuid__WEBPACK_IMPORTED_MODULE_4__["default"])()
+        }, "Error");
+
+      case 'hasValue':
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_MovieContents__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          cursor: index + 1,
+          key: (0,uuid__WEBPACK_IMPORTED_MODULE_4__["default"])(),
+          movies: loadableMovie.contents
+        });
+
+      default:
+        throw 'Error on Movie Content';
+    }
+  }));
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Movies);
@@ -1577,12 +1543,13 @@ const getMoviesQuery = (0,recoil__WEBPACK_IMPORTED_MODULE_2__.selectorFamily)({
   }
 });
 const getAllMovies = (0,recoil__WEBPACK_IMPORTED_MODULE_2__.selector)({
-  key: 'getCurMovies',
+  key: 'getAllMovies',
   get: ({
     get
   }) => {
     const cursors = Array.from(Array(get(_atoms_movieAtom__WEBPACK_IMPORTED_MODULE_0__.movieCursor)).keys(), c => c + 1);
-    return get((0,recoil__WEBPACK_IMPORTED_MODULE_2__.waitForNone)(cursors.map(getMoviesQuery)));
+    const a = (0,recoil__WEBPACK_IMPORTED_MODULE_2__.waitForNone)(cursors.map(getMoviesQuery));
+    return a;
   }
 });
 const getTotalMoviesCount = (0,recoil__WEBPACK_IMPORTED_MODULE_2__.selector)({
@@ -2054,4 +2021,4 @@ module.exports = __webpack_require__.p + "a94e7b425478d62b0112.jpg";
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=main.33cc1183a79bf927e764.bundle.js.map
+//# sourceMappingURL=main.382d700ed6f3620e8dc7.bundle.js.map
