@@ -1,16 +1,17 @@
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
+import { isFilterOpenState } from '@recoil/Filter/FilterAtom';
 import { useSetRecoilState } from 'recoil';
-import { isFilterOpenState } from '@recoil/atoms/filterAtom';
 
-const FilterButton = () => {
+const FilterToggleButton = () => {
   const setIsFilterOpen = useSetRecoilState(isFilterOpenState);
-  const onFilterClick = useCallback(() => {
+
+  const toggleFilter = useCallback(() => {
     setIsFilterOpen((pre) => !pre);
   }, [setIsFilterOpen]);
 
   return (
     <button
-      onClick={onFilterClick}
+      onClick={toggleFilter}
       className="py-1 px-3 shadow-md rounded-md text-sm bg-white text-gray-500 font-semibold scale-md"
     >
       Filter
@@ -18,4 +19,4 @@ const FilterButton = () => {
   );
 };
 
-export default memo(FilterButton);
+export default FilterToggleButton;

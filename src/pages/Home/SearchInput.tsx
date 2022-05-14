@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import { joinClass } from '@utils/styleUtil';
-import FilterButton from './FilterButton';
+import FilterToggleButton from './Filter/FilterToggleButton';
 
 interface props {
   classes?: string;
@@ -17,7 +17,7 @@ const SearchInput: FC<props> = ({ classes }) => {
     <label
       htmlFor="searchTitle"
       className={joinClass(
-        'flex items-center w-fit px-2 rounded-sm shadow-sm bg-gray-100 border-[1px] border-gray-300 ring-gray-300 focus-within:ring-1',
+        'flex items-center w-full mx-auto mt-5 px-2 rounded-sm shadow-sm bg-gray-100 border-[1px] border-gray-300 ring-gray-300 focus-within:ring-1',
         classes ? classes : '',
       )}
     >
@@ -32,7 +32,7 @@ const SearchInput: FC<props> = ({ classes }) => {
         placeholder="Search movie title"
         className="flex-1 p-2 mx-2 bg-transparent text-gray-500 placeholder:text-sm focus:outline-none"
       />
-      <FilterButton />
+      <FilterToggleButton />
     </label>
   );
 };

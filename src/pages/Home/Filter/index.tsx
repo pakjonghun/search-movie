@@ -1,33 +1,19 @@
-import React, { useMemo } from 'react';
-import Switch from './Switch';
-import Genre from './Genre';
-import Popularity from './Popularity';
-import FilterItem from './FilterItem';
-import ApplyButtons from './ApplyButtons';
+import { isFilterOpenState } from '@recoil/Filter/FilterAtom';
+import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { isFilterOpenState } from '@recoil/atoms/filterAtom';
+import ApplyButtons from './FilterApplyButtons';
+import FilterList from './FilterList';
 
 const Filter = () => {
   const isFilterOpen = useRecoilValue(isFilterOpenState);
 
-  const filters = useMemo(
-    () => [
-      { filterName: '컨텐츠', filter: <Switch /> },
-      { filterName: '평 점', filter: <Popularity /> },
-      { filterName: '장 르', filter: <Genre /> },
-    ],
-    [],
-  );
-  if (!isFilterOpen) return <div className="h-[240px] sm:h-[244px] mt-1" />;
+  if (!isFilterOpen) return null;
+
   return (
-    <div className="mt-1 bg-gray-50 shadow-md origin-top">
-      <ul className="divide-y-2">
-        {filters.map((item) => (
-          <FilterItem key={item.filterName} {...item} />
-        ))}
-      </ul>
+    <>
+      <FilterList />
       <ApplyButtons />
-    </div>
+    </>
   );
 };
 

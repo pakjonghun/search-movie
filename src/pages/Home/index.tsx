@@ -1,19 +1,17 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import MainLayout from '@components/MainLayout';
 import SearchInput from './SearchInput';
 import Filter from './Filter';
-import Content from './Content';
-import ContentSelector from './ContentSelector';
+import SearchLayout from './SearchLayout';
 
 const Home = () => {
   return (
     <MainLayout title="title">
-      <div className="w-fit mx-auto mt-5">
-        <SearchInput classes="sm:w-[35rem]" />
+      <SearchLayout>
+        <SearchInput />
+
         <Filter />
-      </div>
-      <ContentSelector />
-      <Content />
+      </SearchLayout>
     </MainLayout>
   );
 };

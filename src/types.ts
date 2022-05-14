@@ -1,18 +1,5 @@
 export type SelectValue = 'none' | 'popularity' | 'genre' | 'date';
 
-export type PopularitySelector = {
-  title: string;
-  subTitle: string;
-  description: string;
-  image: any;
-};
-
-export type GenresSelector = {
-  title: string;
-  ids: number[];
-  image: any;
-};
-
 export type Response<T> = {
   page?: number;
   results?: T;
