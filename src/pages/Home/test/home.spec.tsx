@@ -1,18 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Home from '@pages/Home';
-
 import userEvent from '@testing-library/user-event';
-import { Suspense } from 'react';
-import { RecoilRoot, snapshot_UNSTABLE } from 'recoil';
-
+import { snapshot_UNSTABLE } from 'recoil';
 import { flushPromisesAndTimers, render as render, screen } from './test.util';
-import { findByRole } from '@testing-library/react';
-import {
-  checkIsSelectedPopularityState,
-  progressBarStyleState,
-  progressWidthState,
-} from '@recoil/Filter/FilterSelector';
-import { popularityState } from '@recoil/Filter/FilterAtom';
+import { checkIsSelectedPopularityState, progressWidthState } from '@recoil/filter/filter.selector';
+import { popularityState } from '@recoil/filter/filter.atom';
 
 describe('Title Component', () => {
   const mockState = {

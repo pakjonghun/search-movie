@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { isFilterOpenState } from '@recoil/Filter/FilterAtom';
+import { isFilterOpenState } from '@recoil/filter/filter.atom';
 import { useSetRecoilState } from 'recoil';
 
 const FilterToggleButton = () => {

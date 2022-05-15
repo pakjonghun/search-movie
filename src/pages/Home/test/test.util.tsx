@@ -8,7 +8,7 @@ import {
   progressBarStyleState,
   checkIsSelectedPopularityState,
   calculatePopularityState,
-} from '@recoil/Filter/FilterSelector';
+} from '@recoil/filter/filter.selector';
 
 import {
   isFilterOpenState,
@@ -16,7 +16,7 @@ import {
   selectedGenreIdsState,
   genresState,
   popularityState,
-} from '@recoil/Filter/FilterAtom';
+} from '@recoil/filter/filter.atom';
 
 interface props {
   children: React.ReactNode;

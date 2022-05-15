@@ -4,7 +4,7 @@ import {
   isFilterOpenState,
   popularityState,
   selectedGenreIdsState,
-} from '@recoil/Filter/FilterAtom';
+} from '@recoil/filter/filter.atom';
 import { useRecoilCallback } from 'recoil';
 
 const ApplyButtons = () => {

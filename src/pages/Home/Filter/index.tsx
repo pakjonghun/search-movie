@@ -1,4 +1,4 @@
-import { isFilterOpenState } from '@recoil/Filter/FilterAtom';
+import { isFilterOpenState } from '@recoil/filter/filter.atom';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import ApplyButtons from './FilterApplyButtons';

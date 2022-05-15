@@ -1,6 +1,6 @@
 import React from 'react';
 import { joinClass } from '@utils/styleUtil';
-import { calculatePopularityState, checkIsSelectedPopularityState } from '@recoil/Filter/FilterSelector';
+import { calculatePopularityState, checkIsSelectedPopularityState } from '@recoil/filter/filter.selector';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 interface props {

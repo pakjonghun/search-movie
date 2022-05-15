@@ -5,6 +5,16 @@ import PopularityFilter from './PopularityFilter';
 
 export const filterList = [
   { filterName: '컨텐츠', filterItem: <ContentFilter /> },
-  { filterName: '평 점', filterItem: <PopularityFilter /> },
-  { filterName: '장 르', filterItem: <GenreFilter /> },
+  {
+    filterName: '평 점',
+    filterItem: <PopularityFilter />,
+  },
+  {
+    filterName: '장 르',
+    filterItem: (
+      <React.Suspense fallback={<div>Loading</div>}>
+        <GenreFilter />
+      </React.Suspense>
+    ),
+  },
 ];

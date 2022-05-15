@@ -14,14 +14,10 @@ interface props {
 
 const initialOptions = { root: null, rootMargin: '0px', threshold: 0 };
 
-const useInfinityScroll = ({
-  shouldObserve,
-  options = initialOptions,
-  callback,
-}: props) => {
+const useInfinityScroll = ({ shouldObserve, options = initialOptions, callback }: props) => {
   const [target, setTarget] = useState<HTMLElement | null>(null);
 
-  const setRef = useCallback((element: HTMLElement) => {
+  const setRef = useCallback((element: HTMLDivElement) => {
     setTarget(element);
   }, []);
 

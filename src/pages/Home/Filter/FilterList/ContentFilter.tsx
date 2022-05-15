@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { joinClass } from '@utils/styleUtil';
 import { useRecoilState } from 'recoil';
-import { filterContentState } from '@recoil/Filter/FilterAtom';
+import { filterContentState } from '@recoil/filter/filter.atom';
 
 const ContentFilter = () => {
   const [filterContent, setFilterContent] = useRecoilState(filterContentState);
@@ -9,7 +9,6 @@ const ContentFilter = () => {
   const onContentSwitch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const content = event.target.checked ? 'MOVIE' : 'TV';
-      console.log(content);
       setFilterContent(content);
     },
     [setFilterContent],
