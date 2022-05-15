@@ -1,6 +1,7 @@
 import React from 'react';
 import { joinClass } from '@utils/styleUtil';
-import { PopularityProgressBarType, progressWidthState, progressBarStyleState } from '@recoil/filter/filter.selector';
+import { progressWidthState, progressBarStyleState } from '@recoil/filter/filter.selector';
+import { PopularityProgressBarType } from '@recoil/filter/filter.type';
 import { useRecoilValue } from 'recoil';
 
 interface props {

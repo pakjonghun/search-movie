@@ -6,6 +6,7 @@ import {
   selectedGenreIdsState,
 } from '@recoil/filter/filter.atom';
 import { useRecoilCallback } from 'recoil';
+import { movieReTryCountState } from '@recoil/movie/movie.atom';
 
 const ApplyButtons = () => {
   const onCancel = useRecoilCallback(({ reset }) => () => {
@@ -14,6 +15,7 @@ const ApplyButtons = () => {
     reset(filterContentState);
     reset(selectedGenreIdsState);
     reset(popularityState);
+    reset(movieReTryCountState);
   });
 
   return (

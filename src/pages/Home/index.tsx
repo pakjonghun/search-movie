@@ -4,6 +4,7 @@ import SearchInput from './SearchInput';
 import Filter from './Filter';
 import SearchLayout from './SearchLayout';
 import Movie from './Movie';
+import ContentLayouot from './ContentLayout';
 
 const Home = () => {
   return (
@@ -12,9 +13,10 @@ const Home = () => {
         <SearchInput />
         <Filter />
       </SearchLayout>
-      <React.Suspense fallback={<div>Loading</div>}>
+
+      <ContentLayouot>
         <Movie />
-      </React.Suspense>
+      </ContentLayouot>
     </MainLayout>
   );
 };

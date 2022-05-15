@@ -11,8 +11,11 @@ const Filter = () => {
 
   return (
     <>
-      <FilterList />
-      <ApplyButtons />
+      <div className="fixed inset-0 backdrop-brightness-50" />
+      <div className="absolute top-12 w-full bg-gray-50 rounded-sm shadow-md z-20 ">
+        <FilterList />
+        <ApplyButtons />
+      </div>
     </>
   );
 };
