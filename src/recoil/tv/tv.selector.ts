@@ -13,6 +13,14 @@ export const tvQuery = selectorFamily<TV[], number>({
   },
 });
 
+export const tvVideoQuery = selectorFamily<string[], number>({
+  key: 'tvVideoQuery',
+  get: (tvId) => async () => {
+    const videoKeyList = await apis.tvVideo(tvId);
+    return videoKeyList;
+  },
+});
+
 export const tvTotlaCursorQuery = selector<number>({
   key: 'tvTotlaCursorQuery',
   get: async ({ get }) => {
@@ -72,7 +80,7 @@ export const filteredTVListState = selectorFamily<TV[], number>({
     },
 });
 
-export const tvItemState = selectorFamily<TV | null, TVItemPayload>({
+export const tvItemState = selectorFamily<TV, TVItemPayload>({
   key: 'tvItemState',
   get:
     ({ cursor, index }) =>

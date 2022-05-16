@@ -14,6 +14,14 @@ export const movieQuery = selectorFamily<Movie[], number>({
   },
 });
 
+export const movieVideoQuery = selectorFamily<string[], number>({
+  key: 'movieVideoQuery',
+  get: (movieId) => async () => {
+    const videoKeyList = await apis.movieVideo(movieId);
+    return videoKeyList;
+  },
+});
+
 export const movieTotlaCursorQuery = selector<number>({
   key: 'movieTotlaCursorQuery',
   get: async ({ get }) => {
@@ -37,7 +45,6 @@ export const filteredMovieListState = selectorFamily<Movie[], number>({
         const isTitleContain = title.includes(searchTerm);
         const isGenresContain = checkIsGenresInclude(genre_ids);
         const isPopularityMatch = checkIsPopularityMatch(vote_average);
-
         return isNotAdult && isTitleContain && isGenresContain && isPopularityMatch;
       });
 
@@ -74,7 +81,7 @@ export const filteredMovieListState = selectorFamily<Movie[], number>({
     },
 });
 
-export const movieItemState = selectorFamily<Movie | null, MovieItemPayload>({
+export const movieItemState = selectorFamily<Movie, MovieItemPayload>({
   key: 'movieItemState',
   get:
     ({ cursor, index }) =>

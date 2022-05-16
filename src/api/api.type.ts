@@ -40,3 +40,11 @@ export type TV = {
   vote_average: number;
   vote_count: number;
 };
+
+type MovieVideo = {
+  key: string;
+};
+
+export type MovieVideoList = {
+  results: MovieVideo[];
+};
