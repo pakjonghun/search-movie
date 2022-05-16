@@ -10,7 +10,7 @@ const Navigation: FC<props> = ({ title, canBack }) => {
   return (
     <nav className={joinClass('sticky top-0 grid p-3 text-gray-50', canBack ? 'grid-cols-3' : '')}>
       {canBack && <button className="w-fit scale-md">&larr; back</button>}
-      <h1 className="text-center font-medium first-letter:uppercase">{title}</h1>
+      <h1 className="text-center text-xl font-medium first-letter:uppercase">{title}</h1>
     </nav>
   );
 };

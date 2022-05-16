@@ -1,23 +1,28 @@
 import React, { FC, useCallback, useState } from 'react';
 import { joinClass } from '@utils/styleUtil';
 import FilterToggleButton from './Filter/FilterToggleButton';
+import { useRecoilState } from 'recoil';
+import { searchTermState } from '@recoil/filter/filter.atom';
 
 interface props {
   classes?: string;
 }
 
 const SearchInput: FC<props> = ({ classes }) => {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useRecoilState(searchTermState);
 
-  const onInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setTerm(event.target.value);
-  }, []);
+  const onInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setTerm(event.target.value);
+    },
+    [setTerm],
+  );
 
   return (
     <label
       htmlFor="searchTitle"
       className={joinClass(
-        'flex items-center w-full mx-auto mt-5 px-2 rounded-sm shadow-sm bg-gray-100 border-[1px] border-gray-300 ring-gray-300 focus-within:ring-1',
+        'flex items-center w-full mx-auto mt-5 px-2 rounded-sm shadow-sm bg-gray-200 border-[1px] border-gray-300 ring-gray-300 focus-within:ring-1',
         classes ? classes : '',
       )}
     >

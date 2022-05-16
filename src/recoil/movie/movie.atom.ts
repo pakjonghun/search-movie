@@ -1,4 +1,5 @@
-import { atom } from 'recoil';
+import { atom, atomFamily } from 'recoil';
+import { CacheStore } from '../../cache';
 
 export const movieCursorState = atom<number>({
   key: 'movieCursorState',

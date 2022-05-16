@@ -31,3 +31,8 @@ export const popularityState = atom<number[]>({
   key: 'popularityState',
   default: [],
 });
+
+export const searchTermState = atom<string>({
+  key: 'searchTermState',
+  default: '',
+});

@@ -1,18 +1,27 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { joinClass } from '@utils/styleUtil';
-import { useRecoilState } from 'recoil';
-import { filterContentState } from '@recoil/filter/filter.atom';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
+import {
+  filterContentState,
+  popularityState,
+  searchTermState,
+  selectedGenreIdsState,
+} from '@recoil/filter/filter.atom';
+import { movieReTryCountState } from '@recoil/movie/movie.atom';
+import { tvReTryCountState } from '@recoil/tv/tv.atom';
 
 const ContentFilter = () => {
-  const [filterContent, setFilterContent] = useRecoilState(filterContentState);
+  const filterContent = useRecoilValue(filterContentState);
 
-  const onContentSwitch = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const content = event.target.checked ? 'MOVIE' : 'TV';
-      setFilterContent(content);
-    },
-    [setFilterContent],
-  );
+  const onSwitchClick = useRecoilCallback(({ set, reset }) => (isOn) => {
+    const content = isOn ? 'MOVIE' : 'TV';
+    set(filterContentState, content);
+    reset(searchTermState);
+    reset(selectedGenreIdsState);
+    reset(popularityState);
+    reset(movieReTryCountState);
+    reset(tvReTryCountState);
+  });
 
   return (
     <label
@@ -35,7 +44,7 @@ const ContentFilter = () => {
           filterContent == 'TV' ? '' : 'translate-x-10',
         )}
       />
-      <input onChange={onContentSwitch} type="checkbox" className="hidden" />
+      <input onChange={(event) => onSwitchClick(event.target.checked)} type="checkbox" className="hidden" />
     </label>
   );
 };

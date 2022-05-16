@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   filterContentState,
   isFilterOpenState,
   popularityState,
   selectedGenreIdsState,
 } from '@recoil/filter/filter.atom';
-import { useRecoilCallback } from 'recoil';
+import { useRecoilCallback, useSetRecoilState } from 'recoil';
 import { movieReTryCountState } from '@recoil/movie/movie.atom';
+import { tvReTryCountState } from '@recoil/tv/tv.atom';
 
 const ApplyButtons = () => {
+  const toggleFilter = useSetRecoilState(isFilterOpenState);
+
   const onCancel = useRecoilCallback(({ reset }) => () => {
     reset(isFilterOpenState);
     reset(isFilterOpenState);
@@ -16,7 +19,12 @@ const ApplyButtons = () => {
     reset(selectedGenreIdsState);
     reset(popularityState);
     reset(movieReTryCountState);
+    reset(tvReTryCountState);
   });
+
+  const onApply = useCallback(() => {
+    toggleFilter((pre) => !pre);
+  }, [toggleFilter]);
 
   return (
     <div className="flex justify-center space-x-3 py-3 mr-5">
@@ -26,7 +34,10 @@ const ApplyButtons = () => {
       >
         취소
       </button>
-      <button className="px-5 py-2 bg-blue-400 font-medium text-xs scale-md text-gray-50 rounded-md shadow-md">
+      <button
+        onClick={onApply}
+        className="px-5 py-2 bg-blue-400 font-medium text-xs scale-md text-gray-50 rounded-md shadow-md"
+      >
         적용
       </button>
     </div>

@@ -3,20 +3,18 @@ import MainLayout from '@components/MainLayout';
 import SearchInput from './SearchInput';
 import Filter from './Filter';
 import SearchLayout from './SearchLayout';
-import Movie from './Movie';
 import ContentLayouot from './ContentLayout';
+import Loading from '@components/Loading';
 
 const Home = () => {
   return (
-    <MainLayout title="title">
+    <MainLayout title="Home">
       <SearchLayout>
         <SearchInput />
         <Filter />
       </SearchLayout>
 
-      <ContentLayouot>
-        <Movie />
-      </ContentLayouot>
+      <ContentLayouot />
     </MainLayout>
   );
 };
