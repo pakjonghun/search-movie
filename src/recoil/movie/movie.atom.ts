@@ -1,4 +1,4 @@
-import { atom, DefaultValue } from 'recoil';
+import { atom } from 'recoil';
 
 export const movieCursorState = atom<number>({
   key: 'movieCursorState',

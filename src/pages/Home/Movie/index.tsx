@@ -6,7 +6,6 @@ import MoviesByCursor from './MoviesByCursor';
 const Movie = () => {
   const cursor = useRecoilValue(movieCursorState);
   const array = Array.from(Array(cursor).keys(), (key) => key + 1);
-
   return (
     <>
       <ul className="px-5 py-3 space-y-3 h-[40rem] overflow-y-auto">

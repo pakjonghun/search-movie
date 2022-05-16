@@ -1,14 +1,6 @@
 import React, { FC, ReactElement, Suspense, useEffect } from 'react';
 import { act, render, RenderOptions } from '@testing-library/react';
 import { RecoilRoot, RecoilState, useRecoilValue } from 'recoil';
-import {
-  progressStyleState,
-  genresQuery,
-  progressWidthState,
-  progressBarStyleState,
-  checkIsSelectedPopularityState,
-  calculatePopularityState,
-} from '@recoil/filter/filter.selector';
 
 import {
   isFilterOpenState,
@@ -17,6 +9,7 @@ import {
   genresState,
   popularityState,
 } from '@recoil/filter/filter.atom';
+import Loading from '@components/Loading';
 
 interface props {
   children: React.ReactNode;
@@ -39,7 +32,7 @@ const AllProvider: FC<props> = ({ children }) => {
   const onChange = jest.fn();
   return (
     <RecoilRoot>
-      <Suspense fallback={<div>Loading</div>}>
+      <Suspense fallback={<Loading />}>
         {states.map((state, index) => (
           <RecoilObserver key={index} node={state} onChange={onChange} />
         ))}

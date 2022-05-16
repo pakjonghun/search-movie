@@ -1,8 +1,7 @@
-import { movieCursorListState, movieCursorState, movieReTryCountState } from '@recoil/movie/movie.atom';
-import { movieCountPerCursorState } from '@recoil/movie/movie.selector';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import MoviesByCursor from './Movie/MoviesByCursor';
+import { movieCursorListState, movieCursorState, movieReTryCountState } from '@recoil/movie/movie.atom';
+import Loading from '@components/Loading';
 
 interface props {
   children: React.ReactNode;
@@ -12,17 +11,18 @@ const ContentLayout: React.FC<props> = ({ children }) => {
   const setMovieCursor = useSetRecoilState(movieCursorState);
   const [retryCount, setRetryCount] = useRecoilState(movieReTryCountState);
   const cursorList = useRecoilValue(movieCursorListState);
+  const cursor = useRecoilValue(movieCursorState);
 
   useEffect(() => {
     if (!cursorList[cursorList.length - 1] && retryCount < 5) {
-      console.log('왜 다시 시도하지?', retryCount);
+      if (cursor == 1 && !cursorList.length) return;
       setRetryCount((pre) => pre + 1);
       setMovieCursor((pre) => pre + 1);
     }
-  }, [retryCount, cursorList, setRetryCount, setMovieCursor]);
+  }, [cursor, retryCount, cursorList, setRetryCount, setMovieCursor]);
 
   return (
-    <div className="pt-10">
+    <div className="pt-10 h-[47rem]">
       <h1 className="ml-6">Movie Content</h1>
       <span>재 검색 횟수 : {retryCount}</span>
       {retryCount == 5 && (
@@ -36,8 +36,7 @@ const ContentLayout: React.FC<props> = ({ children }) => {
           </button>
         </>
       )}
-
-      <React.Suspense fallback={<div>Loading</div>}> {children}</React.Suspense>
+      <React.Suspense fallback={<Loading classes="w-full h-full" />}> {children}</React.Suspense>
     </div>
   );
 };

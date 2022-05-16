@@ -2,7 +2,7 @@ import { apis } from './../../api/api';
 import { Movie } from 'api/api.type';
 import { selectorFamily } from 'recoil';
 import { MovieItemPayload } from './movie.type';
-import { popularityState } from '@recoil/filter/filter.atom';
+import { genresState, popularityState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
 import { movieCursorListState, movieCursorState } from './movie.atom';
 
 export const movieQuery = selectorFamily<Movie[], number>({
@@ -13,44 +13,29 @@ export const movieQuery = selectorFamily<Movie[], number>({
   },
 });
 
-export const movieCountPerCursorState = selectorFamily<number, number>({
-  key: 'movieCountPerCursorState',
-  get:
-    (cursor: number) =>
-    ({ get }) => {
-      const movies = get(movieQuery(cursor)).filter((movie) => movie.adult === false);
-
-      const popularities = get(popularityState);
-      let moviesLength = movies.length;
-
-      switch (popularities.length) {
-        case 0:
-          break;
-        case 1: {
-          const filterFunc = ({ vote_average }: Movie) => popularities[0] == vote_average;
-          moviesLength = movies.filter(filterFunc).length;
-          break;
-        }
-        case 2: {
-          const [min, max] = popularities;
-          const filterFunc = ({ vote_average }: Movie) => min <= vote_average && vote_average <= max;
-          moviesLength = movies.filter(filterFunc).length;
-          break;
-        }
-        default:
-          throw new Error('error on movieCountPerCursorState');
-      }
-      return moviesLength;
-    },
-});
-
-export const movieItemState = selectorFamily<Movie | null, MovieItemPayload>({
+export const filteredMovieListState = selectorFamily<Movie[], number>({
   key: 'movieItemState',
   get:
-    ({ cursor, index }) =>
+    (cursor) =>
     ({ get }) => {
       let movies = get(movieQuery(cursor)).filter((movie) => movie.adult === false);
       const popularities = get(popularityState);
+      const genres = get(selectedGenreIdsState);
+
+      switch (true) {
+        case genres.length == 0:
+          break;
+        case genres.length > 0:
+          movies = movies.filter(({ genre_ids }) => {
+            for (const id of genres) {
+              const isExist = genre_ids.some((genreId) => genreId == id);
+              if (isExist) return true;
+            }
+          });
+          break;
+        default:
+          throw new Error('error on movieItemState');
+      }
 
       switch (popularities.length) {
         case 0:
@@ -70,9 +55,27 @@ export const movieItemState = selectorFamily<Movie | null, MovieItemPayload>({
           throw new Error('error on moviesByPopularities');
       }
 
-      const movie = movies[index];
+      return movies;
+    },
+});
 
-      return movie;
+export const movieItemState = selectorFamily<Movie | null, MovieItemPayload>({
+  key: 'movieItemState',
+  get:
+    ({ cursor, index }) =>
+    ({ get }) => {
+      const movieList = get(filteredMovieListState(cursor));
+      return movieList[index];
+    },
+});
+
+export const movieCountPerCursorState = selectorFamily<number, number>({
+  key: 'movieCountPerCursorState',
+  get:
+    (cursor) =>
+    ({ get }) => {
+      const movies = get(filteredMovieListState(cursor));
+      return movies.length;
     },
 });
 

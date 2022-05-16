@@ -1,3 +1,4 @@
+import Loading from '@components/Loading';
 import React from 'react';
 import ContentFilter from './ContentFilter';
 import GenreFilter from './GenreFilter';
@@ -12,7 +13,7 @@ export const filterList = [
   {
     filterName: '장 르',
     filterItem: (
-      <React.Suspense fallback={<div>Loading</div>}>
+      <React.Suspense fallback={<Loading classes="w-full h-full text-gray-300" />}>
         <GenreFilter />
       </React.Suspense>
     ),
