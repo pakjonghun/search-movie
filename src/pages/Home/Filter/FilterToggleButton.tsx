@@ -16,7 +16,7 @@ const FilterToggleButton = () => {
   return (
     <button
       onClick={toggleFilter}
-      className="py-1 px-3 shadow-md rounded-md text-sm bg-white text-gray-500 font-semibold scale-md z-20"
+      className="py-1 px-3 text-sm bg-gray-700 text-gray-50 font-semibold rounded-md shadow-md scale-md z-20"
     >
       Filter
     </button>

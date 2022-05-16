@@ -7,7 +7,7 @@ const Movie = () => {
   const cursor = useRecoilValue(movieCursorState);
   const array = Array.from(Array(cursor).keys(), (key) => key + 1);
   return (
-    <ul className="mt-5 py-2 px-5 bg space-y-3 h-[43rem] overflow-y-auto">
+    <ul className="px-5 py-3 space-y-3 h-[40rem] overflow-y-auto">
       {array.map((cursor) => (
         <MoviesByCursor key={cursor} cursor={cursor} />
       ))}

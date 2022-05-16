@@ -40,7 +40,7 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
 
   return (
     <li className={joinClass(classes ? classes : '')} ref={setItemRef}>
-      {isVisible ? <>{children}</> : <div style={{ height }} />}
+      {isVisible ? <>{children}</> : <div style={{ height }} className="bg-slate-50 animate-pulse" />}
     </li>
   );
 };

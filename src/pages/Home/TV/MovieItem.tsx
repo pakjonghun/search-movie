@@ -35,7 +35,7 @@ const MovieItem: React.FC<props> = ({ index, cursor }) => {
           ref={isLastItem ? ref : null}
           className={joinClass(
             'flex space-x-2  bg-gray-50 shadow-md h-40 border-[1px] rounded-md scale-md overflow-hidden cursor-pointer',
-            isLastItem ? 'gray-100' : '',
+            isLastItem ? 'bg-red-500' : '',
           )}
         >
           <img className="h-full" src={imgUrlMaker(poster_path)} alt={title} />

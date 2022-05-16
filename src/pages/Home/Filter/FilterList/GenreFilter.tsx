@@ -23,7 +23,11 @@ const GenreFilter = () => {
           <li key={id}>
             <label htmlFor={String(id)} className="flex items-center space-x-1 cursor-pointer">
               <div className="relative w-[1rem] aspect-square border-[1px] border-gray-400 bg-gray-50 ring-gray-50">
-                {isSelected ? <span className="absolute inset-0 flex items-center justify-center text-xs">✓</span> : ''}
+                {isSelected ? (
+                  <span className="absolute inset-0 flex items-center justify-center text-gray-500 text-xs">✓</span>
+                ) : (
+                  ''
+                )}
               </div>
               <span className="font-medium text-xs text-gray-500 whitespace-nowrap ">{name}</span>
               <input
