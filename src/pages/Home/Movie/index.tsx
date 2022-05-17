@@ -2,10 +2,7 @@ import React, { useEffect } from 'react';
 import { movieCursorListState, movieCursorState, movieReTryCountState } from '@recoil/movie/movie.atom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import MoviesByCursor from './MoviesByCursor';
-import { tvTotlaCursorQuery } from '@recoil/tv/tv.selector';
-import { movieTotlaCursorQuery } from '@recoil/movie/movie.selector';
-import { filterContentState } from '@recoil/filter/filter.atom';
-import { tvReTryCountState } from '@recoil/tv/tv.atom';
+import { v4 as uuidv4 } from 'uuid';
 
 const Movie = () => {
   const cursor = useRecoilValue(movieCursorState);
@@ -26,7 +23,7 @@ const Movie = () => {
   return (
     <ul className="mt-5 py-2 px-5 bg space-y-3 h-[43rem] overflow-y-auto">
       {array.map((cursor) => (
-        <MoviesByCursor key={cursor} cursor={cursor} />
+        <MoviesByCursor key={uuidv4()} cursor={cursor} />
       ))}
     </ul>
   );

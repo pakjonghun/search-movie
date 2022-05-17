@@ -1,4 +1,3 @@
-import { CacheStore } from './../../cache';
 import { atom } from 'recoil';
 
 export const tvCursorState = atom<number>({

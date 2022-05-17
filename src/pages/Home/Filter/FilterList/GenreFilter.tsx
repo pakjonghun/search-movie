@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { genresState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 
 const GenreFilter = () => {
   const genres = useRecoilValue(genresState);
@@ -17,10 +18,10 @@ const GenreFilter = () => {
   );
   return (
     <ul className="grid grid-cols-3 gap-x-3 gap-y-2 place-items-start">
-      {genres.map(({ id, name }) => {
+      {genres?.map(({ id, name }) => {
         const isSelected = selectedGenreIds.some((selectedGenreId) => selectedGenreId === id);
         return (
-          <li key={id}>
+          <li key={uuidv4()}>
             <label htmlFor={String(id)} className="flex items-center space-x-1 cursor-pointer">
               <div className="relative w-[1rem] aspect-square border-[1px] border-gray-400 bg-gray-50 ring-gray-50">
                 {isSelected ? (

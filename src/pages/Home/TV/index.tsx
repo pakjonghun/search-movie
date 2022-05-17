@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { tvCursorListState, tvCursorState, tvReTryCountState } from '@recoil/tv/tv.atom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import TVByCursor from './tvsByCursor';
+import { v4 as uuidv4 } from 'uuid';
 
 const Movie = () => {
   const cursor = useRecoilValue(tvCursorState);
@@ -21,7 +22,7 @@ const Movie = () => {
   return (
     <ul className="px-5 py-3 space-y-3 h-[40rem] overflow-y-auto">
       {array.map((cursor) => (
-        <TVByCursor key={cursor} cursor={cursor} />
+        <TVByCursor key={uuidv4()} cursor={cursor} />
       ))}
     </ul>
   );

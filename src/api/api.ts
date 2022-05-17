@@ -46,6 +46,7 @@ export const apis = {
     const { results } = await getFetchByFetch<MovieVideoList>({
       url: `/tv/${tvId}/videos`,
     });
+    if (results.some(({ key }) => key == undefined)) return [];
     const videoKeyList = results.map(({ key }) => key);
     return videoKeyList;
   },

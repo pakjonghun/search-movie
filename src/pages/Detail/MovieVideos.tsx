@@ -3,6 +3,7 @@ import { movieItemState, movieVideoQuery } from '@recoil/movie/movie.selector';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { getVideoUrl } from './detail.util';
+import { v4 as uuidv4 } from 'uuid';
 
 const MovieVideos = () => {
   const { id } = useParams();
@@ -12,15 +13,16 @@ const MovieVideos = () => {
 
   const videoKeys = useRecoilValue(movieVideoQuery(Number(id)));
   const { overview, title } = useRecoilValue(movieItemState({ cursor, index }));
+
   return (
     <div className="space-y-5 mt-10">
       <h1 className="font-bold text-gray-50 text-lg md:text-2xl">{title}</h1>
       <p className="font-medium text-gray-200 md:text-xl">{overview}</p>
       {!videoKeys.length && <p className="font-medium text-gray-200">No Video Information</p>}
       <ul className="space-y-5">
-        {videoKeys.slice(0, 2).map((key) => (
-          <li key={key}>
-            <iframe key={key} loading="eager" title={title} className={'w-full aspect-video'} src={getVideoUrl(key)} />
+        {videoKeys.slice(0, 2).map((videoId) => (
+          <li key={uuidv4()}>
+            <iframe loading="eager" title={title} className={'w-full aspect-video'} src={getVideoUrl(videoId)} />
           </li>
         ))}
       </ul>

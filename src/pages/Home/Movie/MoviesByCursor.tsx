@@ -4,6 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import MovieItem from './MovieItem';
 import { produce } from 'immer';
 import { movieCursorListState } from '@recoil/movie/movie.atom';
+import { v4 as uuidv4 } from 'uuid';
 
 interface props {
   cursor: number;
@@ -26,7 +27,7 @@ const MoviesByCursor: React.FC<props> = ({ cursor }) => {
   return (
     <>
       {array.map((index) => (
-        <MovieItem key={index + 1 + (cursor - 1) * 20} cursor={cursor} index={index} />
+        <MovieItem key={uuidv4()} cursor={cursor} index={index} />
       ))}
     </>
   );

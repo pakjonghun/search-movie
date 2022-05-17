@@ -17,7 +17,7 @@ export const tvVideoQuery = selectorFamily<string[], number>({
   key: 'tvVideoQuery',
   get: (tvId) => async () => {
     const videoKeyList = await apis.tvVideo(tvId);
-    return videoKeyList;
+    return videoKeyList || [];
   },
 });
 

@@ -4,6 +4,7 @@ import { tvCountPerCursorState } from '@recoil/tv/tv.selector';
 import TVItem from './tvItem';
 import { produce } from 'immer';
 import { tvCursorListState } from '@recoil/tv/tv.atom';
+import { v4 as uuidv4 } from 'uuid';
 
 interface props {
   cursor: number;
@@ -26,7 +27,7 @@ const MoviesByCursor: React.FC<props> = ({ cursor }) => {
   return (
     <>
       {array.map((index) => (
-        <TVItem key={index + 1 + (cursor - 1) * 20} cursor={cursor} index={index} />
+        <TVItem key={uuidv4()} cursor={cursor} index={index} />
       ))}
     </>
   );
