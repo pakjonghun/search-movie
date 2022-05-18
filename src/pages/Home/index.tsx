@@ -4,7 +4,6 @@ import SearchInput from './SearchInput';
 import Filter from './Filter';
 import SearchLayout from './SearchLayout';
 import ContentLayouot from './ContentLayout';
-import Loading from '@components/Loading';
 
 const Home = () => {
   return (
@@ -13,7 +12,6 @@ const Home = () => {
         <SearchInput />
         <Filter />
       </SearchLayout>
-
       <ContentLayouot />
     </MainLayout>
   );

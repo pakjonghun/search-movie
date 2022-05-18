@@ -1,1 +1,1 @@
-export type MovieItemPayload = { index: number; cursor: number };
+export type MovieItemPayload = { id: number; cursor: number };

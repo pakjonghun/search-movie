@@ -22,12 +22,6 @@ jest.mock('uuid', () => ({
 jest.doMock('intersection-observer', () => MockObserve, { virtual: true });
 window.IntersectionObserver = jest.requireMock('intersection-observer');
 
-//@ts-ignore
-// window.IntersectionObserver = jest.fn(() => ({
-//   observe: jest.fn(),
-//   disconnect: jest.fn(),
-// }));
-
 it('movie test', async () => {
   render(
     <RecoilRoot>

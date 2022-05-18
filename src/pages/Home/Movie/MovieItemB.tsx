@@ -6,15 +6,15 @@ import { movieCursorState } from '@recoil/movie/movie.atom';
 import VirtualizedItem from '@components/VirtualizedItem';
 import { handleImageError, imgUrlMaker, joinClass } from '@utils/styleUtil';
 import { Link } from 'react-router-dom';
+import { Movie } from 'api/api.type';
 
 interface props {
-  id: number;
-  cursor: number;
+  movie: Movie;
 }
 
-const MovieItem: React.FC<props> = ({ id, cursor }) => {
-  const movie = useRecoilValue(movieItemState({ cursor, id }));
-  const isLastItem = useRecoilValue(checkIsLastMovieItem(id));
+const MovieItem: React.FC<props> = ({ movie }) => {
+  const cursor = useRecoilValue(movieCursorState);
+  const isLastItem = useRecoilValue(checkIsLastMovieItem(movie.id));
   const [isImageEmpty, setIsImageEmpty] = useState(false);
 
   const setCursor = useSetRecoilState(movieCursorState);
@@ -29,12 +29,10 @@ const MovieItem: React.FC<props> = ({ id, cursor }) => {
   const totalMovieCursor = useRecoilValue(movieTotlaCursorQuery);
   const ref = useInfinityScroll({ callback: onScroll, shouldObserve: isLastItem });
 
-  if (movie == null) return null;
-
   const { id: movieId, title, poster_path, release_date, vote_average, overview } = movie;
   return (
-    <VirtualizedItem offset={1000} height={150}>
-      <Link state={{ cursor, id }} to={String(movieId)}>
+    <>
+      <Link to={String(movieId)}>
         <div>
           <div
             className={joinClass(
@@ -66,7 +64,7 @@ const MovieItem: React.FC<props> = ({ id, cursor }) => {
           totalMovieCursor - cursor
         }번 더 스크롤 할 수 있어요.`}</div>
       )}
-    </VirtualizedItem>
+    </>
   );
 };
 

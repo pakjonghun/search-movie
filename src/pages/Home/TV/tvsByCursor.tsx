@@ -12,7 +12,8 @@ interface props {
 
 const MoviesByCursor: React.FC<props> = ({ cursor }) => {
   const tvsCountByCursor = useRecoilValue(tvCountPerCursorState(cursor));
-  const array = Array.from(Array(tvsCountByCursor).keys());
+  const tvCountArray = Array.from(Array(tvsCountByCursor).keys());
+
   const setTVCursorList = useSetRecoilState(tvCursorListState);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const MoviesByCursor: React.FC<props> = ({ cursor }) => {
 
   return (
     <>
-      {array.map((index) => (
+      {tvCountArray.map((index) => (
         <TVItem key={uuidv4()} cursor={cursor} index={index} />
       ))}
     </>

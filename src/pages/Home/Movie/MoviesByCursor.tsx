@@ -1,33 +1,34 @@
 import React, { useEffect } from 'react';
-import { movieCountPerCursorState } from '@recoil/movie/movie.selector';
+import { movieCountPerCursorState, movieListState } from '@recoil/movie/movie.selector';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import MovieItem from './MovieItem';
 import { produce } from 'immer';
 import { movieCursorListState } from '@recoil/movie/movie.atom';
 import { v4 as uuidv4 } from 'uuid';
+import MovieItem from './MovieItem';
 
 interface props {
   cursor: number;
 }
 
 const MoviesByCursor: React.FC<props> = ({ cursor }) => {
-  const moviesCountByCursor = useRecoilValue(movieCountPerCursorState(cursor));
-  const array = Array.from(Array(moviesCountByCursor).keys());
+  const movieIdList = useRecoilValue(movieCountPerCursorState(cursor));
+
   const setMovieCursorList = useSetRecoilState(movieCursorListState);
+
+  useRecoilValue(movieListState);
 
   useEffect(() => {
     setMovieCursorList((pre) =>
       produce(pre, (draft) => {
-        draft[cursor - 1] = moviesCountByCursor;
+        draft[cursor - 1] = movieIdList.length;
         return draft;
       }),
     );
-  }, [cursor, moviesCountByCursor, setMovieCursorList]);
-
+  }, [cursor, movieIdList.length, setMovieCursorList]);
   return (
     <>
-      {array.map((index) => (
-        <MovieItem key={uuidv4()} cursor={cursor} index={index} />
+      {movieIdList.map((id) => (
+        <MovieItem key={uuidv4()} cursor={cursor} id={id} />
       ))}
     </>
   );

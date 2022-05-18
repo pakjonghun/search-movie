@@ -23,7 +23,7 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
         const isIntersecting = entries[0].isIntersecting;
         if (typeof window !== undefined && window.requestIdleCallback) {
           window.requestIdleCallback(() => setIsVisible(isIntersecting), {
-            timeout: 500,
+            timeout: 100,
           });
         } else {
           setIsVisible(isIntersecting);

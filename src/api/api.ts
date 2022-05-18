@@ -25,7 +25,7 @@ export const apis = {
 
   movieTotalCursor: async (page: number, query: string) => {
     const { total_pages } = await getFetchByFetch<Response<Movie[]>>({
-      url: '/search/movie',
+      url: '/movie/popular',
       params: { page, query: query || '' },
     });
     return total_pages;

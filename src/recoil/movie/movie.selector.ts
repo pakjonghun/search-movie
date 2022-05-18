@@ -1,16 +1,26 @@
-import { searchTermState } from './../filter/filter.atom';
+import { genresState, searchTermState } from './../filter/filter.atom';
 import { apis } from './../../api/api';
 import { Movie } from 'api/api.type';
-import { selector, selectorFamily } from 'recoil';
+import { Loadable, selector, selectorFamily, waitForNone } from 'recoil';
 import { MovieItemPayload } from './movie.type';
 import { popularityState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
 import { movieCursorListState, movieCursorState } from './movie.atom';
+import { checkIsGenresInclude, checkIsPopularityMatch } from '@pages/Home/Movie/movie.util';
 
 export const movieQuery = selectorFamily<Movie[], number>({
   key: 'movieQuery',
   get: (cursor: number) => async () => {
     const movies = (await apis.popularMovies(cursor)) || [];
     return movies;
+  },
+});
+
+export const movieListState = selector<Loadable<Movie[]>[]>({
+  key: 'movieListState',
+  get: ({ get }) => {
+    const cursor = get(movieCursorState);
+    const listArray = Array.from(Array(cursor).keys(), (count) => count + 1);
+    return get(waitForNone(listArray.map((count) => movieQuery(count))));
   },
 });
 
@@ -26,10 +36,18 @@ export const movieTotlaCursorQuery = selector<number>({
   key: 'movieTotlaCursorQuery',
   get: async ({ get }) => {
     const query = get(searchTermState);
-    console.log('query', query);
     const cursor = get(movieCursorState);
     const totalCursor = await apis.movieTotalCursor(cursor, query || '');
     return totalCursor || 0;
+  },
+});
+
+export const isMovieListHasNoResult = selector<boolean>({
+  key: 'isMovieListHasNoResult',
+  get: ({ get }) => {
+    const cursor = get(movieCursorState);
+    const filteredList = get(filteredMovieListState(cursor));
+    return filteredList.length === 0;
   },
 });
 
@@ -82,43 +100,54 @@ export const filteredMovieListState = selectorFamily<Movie[], number>({
     },
 });
 
-export const movieItemState = selectorFamily<Movie, MovieItemPayload>({
+export const movieItemState = selectorFamily<Movie | undefined, MovieItemPayload>({
   key: 'movieItemState',
   get:
-    ({ cursor, index }) =>
+    ({ cursor, id }) =>
     ({ get }) => {
       const movieList = get(filteredMovieListState(cursor));
-      return movieList[index];
+      return movieList.find(({ id: movieId }) => movieId === id);
     },
 });
 
-export const movieCountPerCursorState = selectorFamily<number, number>({
+export const movieCountPerCursorState = selectorFamily<number[], number>({
   key: 'movieCountPerCursorState',
   get:
     (cursor) =>
     ({ get }) => {
       const movies = get(filteredMovieListState(cursor));
-      return movies.length;
+      return movies.map(({ id }) => id);
     },
 });
 
-export const checkIsLastMovieItem = selectorFamily<boolean, MovieItemPayload>({
+export const checkIsLastMovieItem = selectorFamily<boolean, number>({
   key: 'checkIsLastMovieItem',
   get:
-    ({ cursor, index }) =>
+    (id) =>
     ({ get }) => {
-      const cursorList = get(movieCursorListState);
       const lastCursor = get(movieCursorState);
+      const genres = get(genresState).map(({ id }) => id);
+      const popularities = get(popularityState);
+      const searchTerm = get(searchTermState);
 
-      if (!cursorList.length) return false;
-      if (cursor !== lastCursor) return false;
-      if (cursor == 1) {
-        return get(movieCountPerCursorState(1)) == index + 1;
-      }
+      const movieList = get(movieQuery(lastCursor)).filter(({ adult, vote_average, title, genre_ids }) => {
+        const isNotAdult = !adult;
+        const isTermContain = title.includes(searchTerm);
+        const isGenresInclude = checkIsGenresInclude(genre_ids, genres);
+        const isPopularitiesMatch = checkIsPopularityMatch(vote_average, popularities);
+        return isNotAdult && isTermContain && isGenresInclude && isPopularitiesMatch;
+      });
 
-      const cursorSum = cursorList.reduce((acc, cur) => acc + cur);
-      const cursorSumInput = cursorList.slice(0, cursor - 1).reduce((acc, cur) => acc + cur) + index + 1;
-
-      return cursorSumInput === cursorSum;
+      return movieList[movieList.length - 1]?.id === id;
     },
+});
+
+export const totalMovieCountState = selector<number>({
+  key: 'totalMovieCountState',
+  get: ({ get }) => {
+    const totalList = get(movieCursorListState);
+    if (!totalList.length) return 0;
+    const total = totalList.reduce((acc, cur) => cur + acc);
+    return total;
+  },
 });

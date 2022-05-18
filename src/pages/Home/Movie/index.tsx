@@ -3,10 +3,10 @@ import { movieCursorListState, movieCursorState, movieReTryCountState } from '@r
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import MoviesByCursor from './MoviesByCursor';
 import { v4 as uuidv4 } from 'uuid';
+import MovieList from './MovieList';
 
 const Movie = () => {
   const cursor = useRecoilValue(movieCursorState);
-  const array = Array.from(Array(cursor).keys(), (key) => key + 1);
 
   const setMovieCursor = useSetRecoilState(movieCursorState);
   const [retryCount, setRetryCount] = useRecoilState(movieReTryCountState);
@@ -20,13 +20,7 @@ const Movie = () => {
     }
   }, [cursor, retryCount, cursorList, setRetryCount, setMovieCursor]);
 
-  return (
-    <ul className="mt-5 py-2 px-5 bg space-y-3 h-[43rem] overflow-y-auto">
-      {array.map((cursor) => (
-        <MoviesByCursor key={uuidv4()} cursor={cursor} />
-      ))}
-    </ul>
-  );
+  return <MovieList />;
 };
 
 export default Movie;
