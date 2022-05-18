@@ -12,11 +12,10 @@ const ContentLayout = () => {
   const [tvRetryCount, setTVRetryCount] = useRecoilState(tvReTryCountState);
   const [movieRetryCount, setMovieRetryCount] = useRecoilState(movieReTryCountState);
   const retryCount = selectedContent == 'TV' ? tvRetryCount : movieRetryCount;
-  const isRetry = retryCount >= 5;
+  const isRetry = retryCount == 5;
   const retryFunc = selectedContent == 'TV' ? setTVRetryCount : setMovieRetryCount;
   const content = selectedContent == 'TV' ? <TV /> : <Movie />;
 
-  //is movie has no result 보고 이어서 하면됨. 여기서 분기 하거나 컴포넌트 따로 만들까?..
   return (
     <div className="h-[48rem] pt-5 space-y-5 rounded-md">
       <div className="flex items-center justify-between">

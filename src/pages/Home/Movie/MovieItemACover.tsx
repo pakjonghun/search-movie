@@ -30,12 +30,14 @@ const MovieItemACover: React.FC<props> = ({ movieList }) => {
     [movieList, genres, searchTerm, popularities],
   );
 
+  //  여기다 여기서 각 커서 벼로 몇개 결과를 얻었는지 저장 작업을 해야한다. 아래 해놨는데... 왜  잘 안될까 ㅠ
+
   const setMovieCursorList = useSetRecoilState(movieCursorListState);
 
   useEffect(() => {
     setMovieCursorList((pre) =>
       produce(pre, (draft) => {
-        draft.push(filteredList.length);
+        //여기가 문제인것 같다 아 졸려 일단 자고 내일 해야겠다..
         return draft;
       }),
     );
