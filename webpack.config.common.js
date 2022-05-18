@@ -50,7 +50,7 @@ module.exports = {
     }),
     // new Dotenv(),
     new webpack.ProvidePlugin({
-      react: 'react',
+      React: 'react',
     }),
   ],
 };
