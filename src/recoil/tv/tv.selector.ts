@@ -8,8 +8,8 @@ import { tvCursorListState, tvCursorState } from './tv.atom';
 export const tvQuery = selectorFamily<TV[], number>({
   key: 'tvQuery',
   get: (cursor: number) => async () => {
-    const tvs = await apis.tvs(cursor);
-    return tvs || [];
+    const tvs = (await apis.popularTVs(cursor)) || [];
+    return tvs;
   },
 });
 

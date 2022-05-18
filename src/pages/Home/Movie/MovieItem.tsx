@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { checkIsLastMovieItem, movieItemState, movieTotlaCursorQuery } from '@recoil/movie/movie.selector';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useInfinityScroll from '@hooks/useInfinityScroll';
 import { movieCursorState } from '@recoil/movie/movie.atom';
 import VirtualizedItem from '@components/VirtualizedItem';
-import { imgUrlMaker, joinClass } from '@utils/styleUtil';
+import { handleImageError, imgUrlMaker, joinClass } from '@utils/styleUtil';
 import { Link } from 'react-router-dom';
 
 interface props {
@@ -15,6 +15,8 @@ interface props {
 const MovieItem: React.FC<props> = ({ index, cursor }) => {
   const movie = useRecoilValue(movieItemState({ cursor, index }));
   const isLastItem = useRecoilValue(checkIsLastMovieItem({ cursor, index }));
+  const [isImageEmpty, setIsImageEmpty] = useState(false);
+
   const setCursor = useSetRecoilState(movieCursorState);
   const onScroll: IntersectionObserverCallback = useCallback(
     (extras) => {
@@ -37,7 +39,16 @@ const MovieItem: React.FC<props> = ({ index, cursor }) => {
               isLastItem ? 'gray-100' : '',
             )}
           >
-            <img className="h-full" src={imgUrlMaker(poster_path)} alt={title} />
+            <img
+              className={joinClass('h-full w-[105]', isImageEmpty ? 'bg-slate-200 animate-pulse' : '')}
+              src={imgUrlMaker(poster_path)}
+              alt={title}
+              onError={(event) => {
+                setIsImageEmpty(true);
+                handleImageError(event);
+              }}
+            />
+
             <div className="mt-2 px-2 py-1 space-y-3">
               <h2 className="text-gray-800 font-bold">{title}</h2>
               <span className="mr-3 text-gray-500 text-sm font-medium">{release_date}</span>

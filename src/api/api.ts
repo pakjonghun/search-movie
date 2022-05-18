@@ -7,24 +7,26 @@ export const apis = {
     const { genres } = await getFetchByFetch<{ genres: Genre[] }>({ url: '/genre/list' });
     return genres;
   },
-  movies: async (page: number) => {
+  popularMovies: async (page: number) => {
     const { results } = await getFetchByFetch<Response<Movie[]>>({
       url: '/movie/popular',
       params: { page },
     });
     return results;
   },
-  tvs: async (page: number) => {
+
+  popularTVs: async (page: number) => {
     const { results } = await getFetchByFetch<Response<TV[]>>({
       url: '/tv/popular',
       params: { page },
     });
     return results;
   },
-  movieTotalCursor: async (page: number) => {
+
+  movieTotalCursor: async (page: number, query: string) => {
     const { total_pages } = await getFetchByFetch<Response<Movie[]>>({
-      url: '/movie/popular',
-      params: { page },
+      url: '/search/movie',
+      params: { page, query: query || '' },
     });
     return total_pages;
   },

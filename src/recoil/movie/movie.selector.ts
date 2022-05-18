@@ -9,8 +9,8 @@ import { movieCursorListState, movieCursorState } from './movie.atom';
 export const movieQuery = selectorFamily<Movie[], number>({
   key: 'movieQuery',
   get: (cursor: number) => async () => {
-    const movies = await apis.movies(cursor);
-    return movies || [];
+    const movies = (await apis.popularMovies(cursor)) || [];
+    return movies;
   },
 });
 
@@ -25,8 +25,10 @@ export const movieVideoQuery = selectorFamily<string[], number>({
 export const movieTotlaCursorQuery = selector<number>({
   key: 'movieTotlaCursorQuery',
   get: async ({ get }) => {
+    const query = get(searchTermState);
+    console.log('query', query);
     const cursor = get(movieCursorState);
-    const totalCursor = await apis.movieTotalCursor(cursor);
+    const totalCursor = await apis.movieTotalCursor(cursor, query || '');
     return totalCursor || 0;
   },
 });

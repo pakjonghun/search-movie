@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { checkIsLastTVItem, tvItemState, tvTotlaCursorQuery } from '@recoil/tv/tv.selector';
 import useInfinityScroll from '@hooks/useInfinityScroll';
 import { tvCursorState } from '@recoil/tv/tv.atom';
 import VirtualizedItem from '@components/VirtualizedItem';
-import { imgUrlMaker } from '@utils/styleUtil';
+import { handleImageError, imgUrlMaker, joinClass } from '@utils/styleUtil';
 import { Link } from 'react-router-dom';
 
 interface props {
@@ -17,6 +17,7 @@ const MovieItem: React.FC<props> = ({ index, cursor }) => {
   const isLastItem = useRecoilValue(checkIsLastTVItem({ cursor, index }));
   const totalTvScroll = useRecoilValue(tvTotlaCursorQuery);
   const setCursor = useSetRecoilState(tvCursorState);
+  const [isImageEmpty, setIsImageEmpty] = useState(false);
 
   const onScroll: IntersectionObserverCallback = useCallback(
     (extras) => {
@@ -34,7 +35,15 @@ const MovieItem: React.FC<props> = ({ index, cursor }) => {
       <Link to={String(id)} state={{ cursor, index }}>
         <div>
           <div className="flex space-x-2  bg-gray-50 shadow-md h-40 border-[1px] rounded-md scale-md overflow-hidden cursor-pointer">
-            <img className="h-full" src={imgUrlMaker(poster_path)} alt={name} />
+            <img
+              className={joinClass('h-full w-[105]', isImageEmpty ? 'bg-slate-200 animate-pulse' : '')}
+              src={imgUrlMaker(poster_path)}
+              alt={name}
+              onError={(event) => {
+                setIsImageEmpty(true);
+                handleImageError(event);
+              }}
+            />
             <div className="mt-2 px-2 py-1 space-y-3">
               <h2 className="text-gray-800 font-bold">{name}</h2>
               <span className="mr-3 text-gray-500 text-sm font-medium">{first_air_date}</span>
