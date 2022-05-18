@@ -24,6 +24,6 @@ module.exports = merge(commonConfig, {
     new MiniCssExtracePlugin({
       filename: '[name].[contenthash].css',
     }),
-    new Dotenv(),
+    new Dotenv({ systemvars: true }),
   ],
 });
