@@ -1,7 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.tsx',
@@ -51,15 +50,6 @@ module.exports = {
     // new Dotenv(),
     new webpack.ProvidePlugin({
       React: 'react',
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.join(__dirname, 'src', 'assets/**/*.jpg'),
-          to: path.join(__dirname, 'public'),
-          context: 'src',
-        },
-      ],
     }),
   ],
 };
