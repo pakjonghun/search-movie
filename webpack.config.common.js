@@ -48,7 +48,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    new Dotenv(),
+    // new Dotenv(),
     new webpack.ProvidePlugin({
       react: 'react',
     }),
