@@ -16,7 +16,6 @@ const MovieItem: React.FC<props> = ({ index, cursor }) => {
   const movie = useRecoilValue(movieItemState({ cursor, index }));
   const isLastItem = useRecoilValue(checkIsLastMovieItem({ cursor, index }));
   const setCursor = useSetRecoilState(movieCursorState);
-
   const onScroll: IntersectionObserverCallback = useCallback(
     (extras) => {
       if (extras[0].isIntersecting) {

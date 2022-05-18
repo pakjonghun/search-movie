@@ -21,9 +21,10 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
 
       const cb: IntersectionObserverCallback = (entries) => {
         const isIntersecting = entries[0].isIntersecting;
+        console.log('intersecting', isIntersecting);
         if (typeof window !== undefined && window.requestIdleCallback) {
           window.requestIdleCallback(() => setIsVisible(isIntersecting), {
-            timeout: 100,
+            timeout: 500,
           });
         } else {
           setIsVisible(isIntersecting);
@@ -31,10 +32,7 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
       };
 
       const observer: IntersectionObserver = new IntersectionObserver(cb, options);
-
       observer.observe(itemRef);
-
-      return observer.disconnect();
     }
   }, [itemRef, offset]);
 
@@ -43,7 +41,7 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
       {isVisible ? (
         <>{children}</>
       ) : (
-        <div data-testid="listitem" style={{ height }} className="bg-slate-50 animate-pulse" />
+        <div data-testid="listitem" style={{ height }} className="rounded-md shadow-md bg-slate-50 animate-pulse" />
       )}
     </li>
   );

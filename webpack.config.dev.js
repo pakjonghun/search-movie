@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
@@ -39,7 +40,7 @@ module.exports = merge(commonConfig, {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-
     // new BundleAnalyzerPlugin(),
+    new Dotenv(),
   ],
 });

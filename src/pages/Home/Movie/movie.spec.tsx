@@ -6,6 +6,7 @@ import Loading from '@components/Loading';
 import Movie from '.';
 import { BrowserRouter } from 'react-router-dom';
 import { mockMovies, Observer } from './mock';
+import { MockObserve } from './mock/intersectionOpserver';
 
 //@ts-ignore
 global.fetch = jest.fn(() =>
@@ -18,14 +19,14 @@ jest.mock('uuid', () => ({
   v4: () => Math.random().toString(20).substring(2, 18),
 }));
 
-// jest.doMock('intersection-observer', () => MockObserve, { virtual: true });
-// window.IntersectionObserver = jest.requireMock('intersection-observer');
+jest.doMock('intersection-observer', () => MockObserve, { virtual: true });
+window.IntersectionObserver = jest.requireMock('intersection-observer');
 
 //@ts-ignore
-window.IntersectionObserver = jest.fn(() => ({
-  observe: jest.fn(),
-  disconnect: jest.fn(),
-}));
+// window.IntersectionObserver = jest.fn(() => ({
+//   observe: jest.fn(),
+//   disconnect: jest.fn(),
+// }));
 
 it('movie test', async () => {
   render(
