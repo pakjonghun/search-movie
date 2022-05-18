@@ -40,7 +40,7 @@ const MovieItem: React.FC<props> = ({ index, cursor }) => {
             )}
           >
             <img
-              className={joinClass('h-full w-[105]', isImageEmpty ? 'bg-slate-200 animate-pulse' : '')}
+              className={joinClass('h-full', isImageEmpty ? 'w-[105px] bg-slate-200' : '')}
               src={imgUrlMaker(poster_path)}
               alt={title}
               onError={(event) => {

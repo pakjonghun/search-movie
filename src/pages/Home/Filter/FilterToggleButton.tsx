@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react';
 import { isFilterOpenState } from '@recoil/filter/filter.atom';
 import { useRecoilCallback } from 'recoil';
-import { movieReTryCountState } from '@recoil/movie/movie.atom';
 
 const FilterToggleButton = () => {
-  const onToggleClick = useRecoilCallback(({ set, reset }) => () => {
+  const onToggleClick = useRecoilCallback(({ set }) => () => {
     set(isFilterOpenState, (pre) => !pre);
-    reset(movieReTryCountState);
   });
 
   const toggleFilter = useCallback(() => {
