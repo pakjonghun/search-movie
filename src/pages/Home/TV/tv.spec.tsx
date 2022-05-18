@@ -3,14 +3,14 @@ import { render, screen } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
 import { flushPromisesAndTimers } from '@utils/testUtil';
 import Loading from '@components/Loading';
-import Movie from '.';
+import TV from '.';
 import { BrowserRouter } from 'react-router-dom';
-import { mockMovies, Observer } from './mock';
+import { mockTVS, Observer } from './mock';
 
 //@ts-ignore
 global.fetch = jest.fn(() =>
   Promise.resolve({
-    json: () => Promise.resolve(mockMovies),
+    json: () => Promise.resolve(mockTVS),
   }),
 );
 
@@ -33,7 +33,7 @@ it('movie test', async () => {
       <BrowserRouter>
         <React.Suspense fallback={<Loading />}>
           <Observer onChange={jest.fn()} />
-          <Movie />
+          <TV />
         </React.Suspense>
       </BrowserRouter>
     </RecoilRoot>,

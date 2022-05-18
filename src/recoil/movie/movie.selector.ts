@@ -39,7 +39,6 @@ export const filteredMovieListState = selectorFamily<Movie[], number>({
       const searchTerm = get(searchTermState);
       const popularities = get(popularityState);
       const genres = get(selectedGenreIdsState);
-
       const movies = get(movieQuery(cursor)).filter(({ title, adult, genre_ids, vote_average }) => {
         const isNotAdult = !adult;
         const isTitleContain = title.includes(searchTerm);

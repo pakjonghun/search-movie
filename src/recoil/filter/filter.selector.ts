@@ -2,12 +2,9 @@ import { apis } from '../../api/api';
 import { DefaultValue, selector, selectorFamily, constSelector } from 'recoil';
 import { PopularityProgressBarType } from './filter.type';
 import { BarStyle, popularityState } from './filter.atom';
+import { progressStyle } from './filter.constant';
 
-const progressStyleState = constSelector<Record<PopularityProgressBarType, BarStyle>>({
-  base: { zIndex: 'z-10', color: 'bg-gray-200' },
-  percent: { zIndex: 'z-20', color: 'bg-blue-500' },
-  hide: { zIndex: 'z-40', color: 'bg-gray-200' },
-});
+export const progressStyleState = constSelector<Record<PopularityProgressBarType, BarStyle>>(progressStyle);
 
 export const genresQuery = selector({
   key: 'genresQuery',
@@ -17,7 +14,7 @@ export const genresQuery = selector({
   },
 });
 
-const caculateWidth = (popularity: number) => (!popularity ? 0 : popularity * 10 - 5);
+export const caculateWidth = (popularity: number) => (!popularity ? 0 : popularity * 10 - 5);
 
 export const progressWidthState = selectorFamily<string, PopularityProgressBarType>({
   key: 'popularityWidthPercent',
@@ -81,6 +78,7 @@ export const calculatePopularityState = selector<number[] | number>({
     switch (true) {
       case popularities.length == 2:
         set(popularityState, []);
+
         break;
       case popularities.includes(popularity): {
         const filtered = popularities.filter((p) => p !== popularity);
