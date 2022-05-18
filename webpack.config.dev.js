@@ -10,7 +10,7 @@ module.exports = merge(commonConfig, {
   mode: 'development',
   devServer: {
     static: {
-      directory: path.resolve(__dirname, 'build'),
+      directory: path.resolve(__dirname, 'public'),
     },
     port: 8080,
     open: true,
