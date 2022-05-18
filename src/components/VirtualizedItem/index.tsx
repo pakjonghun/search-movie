@@ -11,7 +11,6 @@ interface props {
 const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [itemRef, setItemRef] = useState<HTMLElement | null>(null);
-  console.log('virtu', isVisible);
   useEffect(() => {
     if (itemRef) {
       const options = {
