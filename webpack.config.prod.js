@@ -1,3 +1,4 @@
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const MiniCssExtracePlugin = require('mini-css-extract-plugin');
 const commonConfig = require('./webpack.config.common.js');
@@ -23,5 +24,6 @@ module.exports = merge(commonConfig, {
     new MiniCssExtracePlugin({
       filename: '[name].[contenthash].css',
     }),
+    new Dotenv(),
   ],
 });
