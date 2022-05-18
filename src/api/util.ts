@@ -3,7 +3,7 @@ import { FetchPayload } from './api.type';
 console.log('cdkey', process.env.KEY);
 export const urlMaker = ({ url, params = {} }: FetchPayload) => {
   const urlObject = new URLSearchParams();
-  urlObject.append('api_key', process.env.REACT_APP_API_KEY);
+  urlObject.append('api_key', process.env.REACT_APP_VERCEL_API_KEY);
   const keys = Object.keys(params);
 
   keys.forEach((key) => {
