@@ -9,7 +9,7 @@ interface props {
 }
 
 const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [itemRef, setItemRef] = useState<HTMLElement | null>(null);
   useEffect(() => {
     if (itemRef) {
@@ -23,7 +23,7 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
         const isIntersecting = entries[0].isIntersecting;
         if (typeof window !== undefined && window.requestIdleCallback) {
           window.requestIdleCallback(() => setIsVisible(isIntersecting), {
-            timeout: 100,
+            timeout: 300,
           });
         } else {
           setIsVisible(isIntersecting);
@@ -40,7 +40,7 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
       {isVisible ? (
         <>{children}</>
       ) : (
-        <div data-testid="listitem" style={{ height }} className="rounded-md shadow-md bg-slate-50 animate-pulse" />
+        <div data-testid="listitem" style={{ height }} className="rounded-md shadow-md bg-slate-50" />
       )}
     </li>
   );

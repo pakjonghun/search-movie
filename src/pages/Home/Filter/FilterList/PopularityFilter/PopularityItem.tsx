@@ -2,7 +2,6 @@ import React from 'react';
 import { joinClass } from '@utils/styleUtil';
 import { calculatePopularityState, checkIsSelectedPopularityState } from '@recoil/filter/filter.selector';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { movieCursorListState, movieCursorState, movieReTryCountState } from '@recoil/movie/movie.atom';
 
 interface props {
   popularity: number;
@@ -13,9 +12,6 @@ const PopularityItem: React.FC<props> = ({ popularity }) => {
 
   const onVoteClick = useRecoilCallback(({ set, reset }) => () => {
     set(calculatePopularityState, popularity);
-    reset(movieCursorState);
-    reset(movieCursorListState);
-    reset(movieReTryCountState);
   });
 
   return (

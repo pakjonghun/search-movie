@@ -1,11 +1,21 @@
-import { genresState, searchTermState } from './../filter/filter.atom';
+import { searchTermState } from './../filter/filter.atom';
 import { apis } from './../../api/api';
 import { Movie } from 'api/api.type';
 import { Loadable, selector, selectorFamily, waitForNone } from 'recoil';
 import { MovieItemPayload } from './movie.type';
 import { popularityState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
-import { movieCursorListState, movieCursorState } from './movie.atom';
-import { checkIsGenresInclude, checkIsPopularityMatch } from '@pages/Home/Movie/movie.util';
+import { movieCursorState, movieIdListState } from './movie.atom';
+
+export const isLastItemState = selectorFamily<boolean, number>({
+  key: 'isLastItemState',
+  get:
+    (movieId) =>
+    ({ get }) => {
+      const cursor = get(movieCursorState);
+      const movieIdList = get(movieIdListState(cursor));
+      return movieId === movieIdList[movieIdList.length - 1];
+    },
+});
 
 export const movieQuery = selectorFamily<Movie[], number>({
   key: 'movieQuery',
@@ -118,36 +128,4 @@ export const movieCountPerCursorState = selectorFamily<number[], number>({
       const movies = get(filteredMovieListState(cursor));
       return movies.map(({ id }) => id);
     },
-});
-
-export const checkIsLastMovieItem = selectorFamily<boolean, number>({
-  key: 'checkIsLastMovieItem',
-  get:
-    (id) =>
-    ({ get }) => {
-      const lastCursor = get(movieCursorState);
-      const genres = get(genresState).map(({ id }) => id);
-      const popularities = get(popularityState);
-      const searchTerm = get(searchTermState);
-
-      const movieList = get(movieQuery(lastCursor)).filter(({ adult, vote_average, title, genre_ids }) => {
-        const isNotAdult = !adult;
-        const isTermContain = title.includes(searchTerm);
-        const isGenresInclude = checkIsGenresInclude(genre_ids, genres);
-        const isPopularitiesMatch = checkIsPopularityMatch(vote_average, popularities);
-        return isNotAdult && isTermContain && isGenresInclude && isPopularitiesMatch;
-      });
-
-      return movieList[movieList.length - 1]?.id === id;
-    },
-});
-
-export const totalMovieCountState = selector<number>({
-  key: 'totalMovieCountState',
-  get: ({ get }) => {
-    const totalList = get(movieCursorListState);
-    if (!totalList.length) return 0;
-    const total = totalList.reduce((acc, cur) => cur + acc);
-    return total;
-  },
 });

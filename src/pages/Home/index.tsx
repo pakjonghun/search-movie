@@ -4,6 +4,7 @@ import SearchInput from './SearchInput';
 import Filter from './Filter';
 import SearchLayout from './SearchLayout';
 import ContentLayouot from './ContentLayout';
+import Movie from './Movie';
 
 const Home = () => {
   return (

@@ -7,8 +7,6 @@ import {
   searchTermState,
   selectedGenreIdsState,
 } from '@recoil/filter/filter.atom';
-import { movieReTryCountState } from '@recoil/movie/movie.atom';
-import { tvReTryCountState } from '@recoil/tv/tv.atom';
 
 const ContentFilter = () => {
   const filterContent = useRecoilValue(filterContentState);
@@ -19,8 +17,6 @@ const ContentFilter = () => {
     reset(searchTermState);
     reset(selectedGenreIdsState);
     reset(popularityState);
-    reset(movieReTryCountState);
-    reset(tvReTryCountState);
   });
 
   return (

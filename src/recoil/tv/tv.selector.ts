@@ -1,6 +1,6 @@
 import { apis } from '../../api/api';
 import { TV } from 'api/api.type';
-import { selector, selectorFamily } from 'recoil';
+import { noWait, selector, selectorFamily, waitForNone } from 'recoil';
 import { TVItemPayload } from './tv.type';
 import { popularityState, searchTermState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
 import { tvCursorListState, tvCursorState } from './tv.atom';

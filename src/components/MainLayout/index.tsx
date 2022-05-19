@@ -9,7 +9,7 @@ interface props {
 
 const MainLayout: FC<props> = ({ title, canBack = false, children }) => {
   return (
-    <section className="bg-slate-800 text-gray-50 h-screen max-w-screen-lg mx-auto">
+    <section className=" text-gray-50 h-screen max-w-screen-lg mx-auto">
       <header>
         <Navigation title={title} canBack={canBack} />
       </header>

@@ -17,7 +17,7 @@ const initialOptions = { root: null, rootMargin: '0px', threshold: 0 };
 const useInfinityScroll = ({ shouldObserve, options = initialOptions, callback }: props) => {
   const [target, setTarget] = useState<HTMLElement | null>(null);
 
-  const setRef = useCallback((element: HTMLDivElement) => {
+  const setRef = useCallback((element: HTMLLIElement) => {
     setTarget(element);
   }, []);
 

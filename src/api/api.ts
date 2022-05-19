@@ -3,6 +3,21 @@ import { Movie, Response, TV, MovieVideoList } from './api.type';
 import { Genre } from '@recoil/filter/filter.type';
 
 export const apis = {
+  movieIds: async (page: number) => {
+    const { results } = await getFetchByFetch<Response<Movie[]>>({
+      url: '/movie/popular',
+      params: { page },
+    });
+    return results ? results.map(({ id }) => id) : [];
+  },
+
+  movieDetail: async (movieId: number) => {
+    const movie = await getFetchByFetch<Movie>({
+      url: `/movie/${movieId}`,
+    });
+    return movie || null;
+  },
+
   genres: async () => {
     const { genres } = await getFetchByFetch<{ genres: Genre[] }>({ url: '/genre/list' });
     return genres;
