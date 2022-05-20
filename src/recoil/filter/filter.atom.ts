@@ -1,6 +1,4 @@
-import { atom } from 'recoil';
-import { genresQuery } from './filter.selector';
-import { FilterContent, Genre } from './filter.type';
+import { atom, atomFamily } from 'recoil';
 
 export type BarStyle = {
   color: string;
@@ -12,27 +10,12 @@ export const isFilterOpenState = atom({
   default: false,
 });
 
-export const filterContentState = atom<FilterContent>({
-  key: 'filterContentState',
-  default: 'TV',
-});
-
-export const selectedGenreIdsState = atom<number[]>({
+export const selectedGenreIdsState = atomFamily<number[], string>({
   key: 'selectedGenreIdsState',
   default: [],
 });
 
-export const genresState = atom<Genre[]>({
-  key: 'genresState',
-  default: genresQuery,
-});
-
-export const popularityState = atom<number[]>({
+export const popularityState = atomFamily<number[], string>({
   key: 'popularityState',
   default: [],
-});
-
-export const searchTermState = atom<string>({
-  key: 'searchTermState',
-  default: '',
 });

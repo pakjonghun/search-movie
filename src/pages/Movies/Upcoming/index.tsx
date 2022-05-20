@@ -8,9 +8,8 @@ import { useLocation } from 'react-router-dom';
 const UpcomingMovie = () => {
   const { pathname } = useLocation();
   const loadbaleContentList = useRecoilValueLoadable(movieListState(pathname));
-  const title = 'Popular Movie';
   return (
-    <MainLayout title={title}>
+    <MainLayout title={'Popular Movie'}>
       <Content loadbaleContentList={loadbaleContentList} />
     </MainLayout>
   );

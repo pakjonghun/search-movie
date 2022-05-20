@@ -1,11 +1,6 @@
 import { MovieCache } from './movie.cache';
-import { atom, atomFamily } from 'recoil';
+import { atomFamily } from 'recoil';
 import { Content } from '@api/api.type';
-
-export const movieCursorState = atom<number>({
-  key: 'movieCursorState',
-  default: 1,
-});
 
 export const movieDetailState = atomFamily<Content | null, number>({
   key: 'movieDecotailState',

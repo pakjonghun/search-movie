@@ -1,19 +1,12 @@
-import { Movie } from 'api/api.type';
-import { apis } from '../../api/api';
+import { apis } from '@api/api';
+import { Content } from '@api/api.type';
 
 export class MovieCache {
-  private idList: Record<number, number[]> = {};
-  private movieList: Record<number, Movie | null> = {};
+  private movieList: Record<number, Content | null> = {};
   static instance: MovieCache;
 
   public static getInstance() {
     return this.instance || new this();
-  }
-
-  async getIds(cursor: number) {
-    if (this.idList[cursor]) return this.idList[cursor];
-    this.idList[cursor] = await apis.movieIds(cursor);
-    return this.idList[cursor];
   }
 
   async getMovie(movieId: number) {

@@ -2,14 +2,16 @@ import React, { useCallback } from 'react';
 import { joinClass } from '@utils/styleUtil';
 import FilterToggleButton from './Filter/FilterToggleButton';
 import { useRecoilState } from 'recoil';
-import { searchTermState } from '@recoil/filter/filter.atom';
+import { searchTermState } from '@recoil/common/atom';
+import { useLocation } from 'react-router-dom';
 
 interface props {
   classes?: string;
 }
 
 const SearchInput: React.FC<props> = ({ classes }) => {
-  const [term, setTerm] = useRecoilState(searchTermState);
+  const { pathname } = useLocation();
+  const [term, setTerm] = useRecoilState(searchTermState(pathname));
 
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

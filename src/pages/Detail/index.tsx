@@ -1,22 +1,25 @@
 import React from 'react';
-import MainLayout from '@components/MainLayout';
-import { useRecoilValue } from 'recoil';
-import { filterContentState } from '@recoil/filter/filter.atom';
-import Loading from '@components/Loading';
-import MovieVideos from './MovieVideos';
-import TVVideos from './TVVideos';
+import { useLocation } from 'react-router-dom';
 
-const Detail = () => {
-  const selectedContent = useRecoilValue(filterContentState);
+import ContentVideo from './ContentVideo';
+import Loading from '@components/Loading';
+import MainLayout from '@components/MainLayout';
+
+const MovieVideos = () => {
+  const { state } = useLocation();
+  const { contentOverview, contentTitle } = state as { contentOverview?: string; contentTitle?: string };
 
   return (
-    <MainLayout title="detail" canBack={true}>
-      <React.Suspense fallback={<Loading classes="h-[50vh]" />}>
-        {selectedContent == 'MOVIE' && <MovieVideos />}
-        {selectedContent == 'TV' && <TVVideos />}
-      </React.Suspense>
+    <MainLayout title="Detail" canBack={true}>
+      <div className="space-y-5 mt-10">
+        <h1 className="font-bold text-gray-800 text-lg md:text-2xl">{contentTitle}</h1>
+        <p className="font-medium text-gray-500 md:text-xl">{contentOverview}</p>
+        <React.Suspense fallback={<Loading classes="h-[40vh]" />}>
+          <ContentVideo contentTitle={contentTitle} />
+        </React.Suspense>
+      </div>
     </MainLayout>
   );
 };
 
-export default Detail;
+export default MovieVideos;

@@ -2,16 +2,18 @@ import React from 'react';
 import { joinClass } from '@utils/styleUtil';
 import { calculatePopularityState, checkIsSelectedPopularityState } from '@recoil/filter/filter.selector';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useLocation } from 'react-router-dom';
 
 interface props {
   popularity: number;
 }
 
 const PopularityItem: React.FC<props> = ({ popularity }) => {
-  const isSelected = useRecoilValue(checkIsSelectedPopularityState(popularity));
+  const { pathname: path } = useLocation();
+  const isSelected = useRecoilValue(checkIsSelectedPopularityState({ popularity, path }));
 
   const onVoteClick = useRecoilCallback(({ set, reset }) => () => {
-    set(calculatePopularityState, popularity);
+    set(calculatePopularityState(path), popularity);
   });
 
   return (

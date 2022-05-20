@@ -1,20 +1,16 @@
 import React, { useCallback } from 'react';
-import {
-  filterContentState,
-  isFilterOpenState,
-  popularityState,
-  selectedGenreIdsState,
-} from '@recoil/filter/filter.atom';
+import { isFilterOpenState, popularityState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
 import { useRecoilCallback, useSetRecoilState } from 'recoil';
+import { useLocation } from 'react-router-dom';
 
 const ApplyButtons = () => {
   const toggleFilter = useSetRecoilState(isFilterOpenState);
+  const { pathname } = useLocation();
 
   const onCancel = useRecoilCallback(({ reset }) => () => {
     reset(isFilterOpenState);
-    reset(filterContentState);
-    reset(selectedGenreIdsState);
-    reset(popularityState);
+    reset(selectedGenreIdsState(pathname));
+    reset(popularityState(pathname));
   });
 
   const onApply = useCallback(() => {

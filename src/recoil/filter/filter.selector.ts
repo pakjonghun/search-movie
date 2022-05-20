@@ -1,29 +1,47 @@
+import { ContentType, Genre, ProgressWithArgs } from '@recoil/filter/filter.type';
 import { apis } from '@api/api';
 import { DefaultValue, selector, selectorFamily, constSelector } from 'recoil';
-import { PopularityProgressBarType } from './filter.type';
+import { PopularityProgressBarType, CheckIsSelectedPopularityArgs } from './filter.type';
 import { BarStyle, popularityState } from './filter.atom';
 import { progressStyle } from './filter.constant';
 
 export const progressStyleState = constSelector<Record<PopularityProgressBarType, BarStyle>>(progressStyle);
 
-export const genresQuery = selector({
+export const genresQuery = selectorFamily<Genre[], ContentType>({
   key: 'genresQuery',
-  get: async () => {
-    const genres = await apis.genres();
-    return genres;
+  get: (contentType) => async () => {
+    let apiFunc: () => Promise<Genre[]>;
+
+    switch (contentType) {
+      case 'movie': {
+        apiFunc = apis.genresMovie;
+        break;
+      }
+
+      case 'tv': {
+        apiFunc = apis.genresTV;
+        break;
+      }
+
+      default:
+        throw new Error('error on genresQuery');
+    }
+
+    const genres = await apiFunc();
+    return genres || [];
   },
 });
 
 export const caculateWidth = (popularity: number) => (!popularity ? 0 : popularity * 10 - 5);
 
-export const progressWidthState = selectorFamily<string, PopularityProgressBarType>({
+export const progressWidthState = selectorFamily<string, ProgressWithArgs>({
   key: 'popularityWidthPercent',
   get:
-    (progressBarType) =>
+    ({ barType, path }) =>
     ({ get }) => {
-      const [min, max] = get(popularityState);
+      const [min, max] = get(popularityState(path));
 
-      switch (progressBarType) {
+      switch (barType) {
         case 'base':
           return '100%';
         case 'hide':
@@ -46,12 +64,12 @@ export const progressBarStyleState = selectorFamily<BarStyle, PopularityProgress
     },
 });
 
-export const checkIsSelectedPopularityState = selectorFamily<boolean, number>({
+export const checkIsSelectedPopularityState = selectorFamily<boolean, CheckIsSelectedPopularityArgs>({
   key: 'checkIsSelectedPopularityState',
   get:
-    (popularity) =>
+    ({ popularity, path }) =>
     ({ get }) => {
-      const popularities = get(popularityState);
+      const popularities = get(popularityState(path));
       switch (popularities.length) {
         case 0:
           return false;
@@ -67,34 +85,38 @@ export const checkIsSelectedPopularityState = selectorFamily<boolean, number>({
     },
 });
 
-export const calculatePopularityState = selector<number[] | number>({
+export const calculatePopularityState = selectorFamily<number[] | number, string>({
   key: 'calculatePopularityState',
-  get: ({ get }) => {
-    return get(popularityState);
-  },
-  set: ({ get, set }, popularity) => {
-    if (Array.isArray(popularity) || popularity instanceof DefaultValue) return;
-    const popularities = get(popularityState);
-    switch (true) {
-      case popularities.length == 2:
-        set(popularityState, []);
+  get:
+    (path) =>
+    ({ get }) => {
+      return get(popularityState(path));
+    },
+  set:
+    (path) =>
+    ({ get, set }, popularity) => {
+      if (Array.isArray(popularity) || popularity instanceof DefaultValue) return;
+      const popularities = get(popularityState(path));
+      switch (true) {
+        case popularities.length == 2:
+          set(popularityState(path), []);
 
-        break;
-      case popularities.includes(popularity): {
-        const filtered = popularities.filter((p) => p !== popularity);
-        set(popularityState, filtered);
-        break;
+          break;
+        case popularities.includes(popularity): {
+          const filtered = popularities.filter((p) => p !== popularity);
+          set(popularityState(path), filtered);
+          break;
+        }
+        case popularities.length == 1: {
+          const temp = popularities[0] < popularity ? [popularities[0], popularity] : [popularity, popularities[0]];
+          set(popularityState(path), temp);
+          break;
+        }
+        case !popularities.length:
+          set(popularityState(path), [popularity]);
+          break;
+        default:
+          throw new Error('calculatePopularities error');
       }
-      case popularities.length == 1: {
-        const temp = popularities[0] < popularity ? [popularities[0], popularity] : [popularity, popularities[0]];
-        set(popularityState, temp);
-        break;
-      }
-      case !popularities.length:
-        set(popularityState, [popularity]);
-        break;
-      default:
-        throw new Error('calculatePopularities error');
-    }
-  },
+    },
 });

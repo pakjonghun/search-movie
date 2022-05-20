@@ -1,5 +1,5 @@
 import { getFetchByFetch } from './util';
-import { Content, Response, MovieVideoList } from './api.type';
+import { Content, Response, MovieVideoList, SearchArgs } from './api.type';
 import { Genre } from '@recoil/filter/filter.type';
 
 export const apis = {
@@ -10,8 +10,13 @@ export const apis = {
     return movie || null;
   },
 
-  genres: async () => {
-    const { genres } = await getFetchByFetch<{ genres: Genre[] }>({ url: '/genre/list' });
+  genresMovie: async () => {
+    const { genres } = await getFetchByFetch<{ genres: Genre[] }>({ url: '/genre/movie/list' });
+    return genres;
+  },
+
+  genresTV: async () => {
+    const { genres } = await getFetchByFetch<{ genres: Genre[] }>({ url: '/genre/tv/list' });
     return genres;
   },
 
@@ -31,6 +36,14 @@ export const apis = {
     return results;
   },
 
+  searchMovies: async ({ cursor, searchTerm }: SearchArgs) => {
+    const { results } = await getFetchByFetch<Response<Content[]>>({
+      url: '/search/movie',
+      params: { page: cursor, query: searchTerm },
+    });
+    return results;
+  },
+
   popularTVs: async (page: number) => {
     const { results } = await getFetchByFetch<Response<Content[]>>({
       url: '/tv/popular',
@@ -39,25 +52,27 @@ export const apis = {
     return results;
   },
 
-  movieTotalCursor: async (page: number, query: string) => {
-    const { total_pages } = await getFetchByFetch<Response<Content[]>>({
-      url: '/movie/popular',
-      params: { page, query: query || '' },
-    });
-    return total_pages;
-  },
-  tvsTotalCursor: async (page: number) => {
-    const { total_pages } = await getFetchByFetch<Response<Content[]>>({
-      url: '/tv/popular',
+  onAirTVs: async (page: number) => {
+    const { results } = await getFetchByFetch<Response<Content[]>>({
+      url: '/tv/on_the_air',
       params: { page },
     });
-    return total_pages;
+    return results;
   },
+
+  searchTVs: async ({ cursor, searchTerm }: SearchArgs) => {
+    const { results } = await getFetchByFetch<Response<Content[]>>({
+      url: '/search/tv',
+      params: { page: cursor, query: searchTerm },
+    });
+    return results;
+  },
+
   movieVideo: async (movieId: number) => {
     const { results } = await getFetchByFetch<MovieVideoList>({
       url: `/movie/${movieId}/videos`,
     });
-    const videoKeyList = results.map(({ key }) => key);
+    const videoKeyList = results?.map(({ key }) => key) || [];
     return videoKeyList;
   },
   tvVideo: async (tvId: number) => {
@@ -65,7 +80,7 @@ export const apis = {
       url: `/tv/${tvId}/videos`,
     });
     if (results.some(({ key }) => key == undefined)) return [];
-    const videoKeyList = results.map(({ key }) => key);
+    const videoKeyList = results?.map(({ key }) => key) || [];
     return videoKeyList;
   },
 };

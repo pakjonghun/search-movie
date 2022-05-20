@@ -1,18 +1,18 @@
 import React from 'react';
 import MainLayout from '@components/MainLayout';
-import Content from '@components/Content';
 import { useRecoilValueLoadable } from 'recoil';
-import { movieListState } from '@recoil/movie/movie.selector';
+import Content from '@components/Content';
 import { useLocation } from 'react-router-dom';
+import { tvListState } from '@recoil/tv/tv.selector';
 
-const PopularMovie = () => {
+const SearchTV = () => {
   const { pathname } = useLocation();
-  const loadbaleContentList = useRecoilValueLoadable(movieListState(pathname));
+  const loadbaleContentList = useRecoilValueLoadable(tvListState(pathname));
   return (
-    <MainLayout title={'Popular Movie'}>
+    <MainLayout title="Search TV">
       <Content loadbaleContentList={loadbaleContentList} />
     </MainLayout>
   );
 };
 
-export default PopularMovie;
+export default SearchTV;

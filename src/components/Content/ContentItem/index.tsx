@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { handleImageError, imgUrlMaker, joinClass } from '@utils/styleUtil';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Content } from '@api/api.type';
-import { popularityState, searchTermState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
+import { popularityState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
 import { checkIsGenresInclude, checkIsPopularityMatch } from '../content.util';
+import { searchTermState } from '@recoil/common/atom';
+import useCheckContent from '@hooks/useCheckContent';
 
 interface props {
   contentItem: Content;
@@ -12,6 +14,7 @@ interface props {
 
 const ContentItem: React.FC<props> = ({ contentItem }) => {
   const [isImageEmpty, setIsImageEmpty] = useState(false);
+  const { pathname } = useLocation();
   const {
     adult,
     poster_path,
@@ -21,24 +24,26 @@ const ContentItem: React.FC<props> = ({ contentItem }) => {
     release_date,
     title,
     genre_ids,
+    genres: gen,
     vote_average,
     overview,
   } = contentItem;
   const contentDate = first_air_date ? first_air_date : release_date;
   const contentTitle = name ? name : title;
+  const contentGenre = gen ? gen.map(({ id }) => id) : genre_ids || [];
 
-  const searchTerm = useRecoilValue(searchTermState);
-  const popularities = useRecoilValue(popularityState);
-  const genres = useRecoilValue(selectedGenreIdsState);
+  const searchTerm = useRecoilValue(searchTermState(pathname));
+  const popularities = useRecoilValue(popularityState(pathname));
+  const genres = useRecoilValue(selectedGenreIdsState(pathname));
 
   const isNotAdult = !adult;
   const isTitleContain = contentTitle?.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
-  const isGenresContain = checkIsGenresInclude(genre_ids, genres);
+  const isGenresContain = checkIsGenresInclude(contentGenre, genres);
   const isPopularityMatch = checkIsPopularityMatch(vote_average, popularities);
   const isMatch = isNotAdult && isTitleContain && isGenresContain && isPopularityMatch;
-
+  const content = useCheckContent();
   return (
-    <Link to={String(contentId)}>
+    <Link to={`/${content}s/${contentId}`} state={{ contentOverview: overview, contentTitle }}>
       <div
         className={joinClass(
           'flex space-x-2  bg-gray-50 shadow-md h-40 border-[1px] rounded-md scale-md overflow-hidden cursor-pointer',
