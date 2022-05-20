@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
-import ApplyButtons from '@pages/Home/Filter/FilterApplyButtons';
+import ApplyButtons from '@components/Search/Filter/FilterApplyButtons';
 import { flushPromisesAndTimers } from '@utils/testUtil';
 
 describe('filter test', () => {

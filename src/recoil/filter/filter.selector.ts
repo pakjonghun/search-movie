@@ -1,4 +1,4 @@
-import { apis } from '../../api/api';
+import { apis } from '@api/api';
 import { DefaultValue, selector, selectorFamily, constSelector } from 'recoil';
 import { PopularityProgressBarType } from './filter.type';
 import { BarStyle, popularityState } from './filter.atom';

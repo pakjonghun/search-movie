@@ -8,10 +8,13 @@ module.exports = {
     path: path.resolve(__dirname, 'public'),
     filename: '[name].[contenthash].bundle.js',
     clean: true,
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts', 'json'],
     alias: {
+      '@routers': path.join(__dirname, 'src', 'routers'),
+      '@api': path.join(__dirname, 'src', 'api'),
       '@recoil': path.join(__dirname, 'src', 'recoil'),
       '@hooks': path.join(__dirname, 'src', 'hooks'),
       '@utils': path.join(__dirname, 'src', 'utils'),

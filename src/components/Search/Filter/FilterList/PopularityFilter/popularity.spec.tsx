@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { render, screen } from '@testing-library/react';
 import { RecoilRoot, useRecoilValue } from 'recoil';
-import PopularityFilter from '@pages/Home/Filter/FilterList/PopularityFilter';
+import PopularityFilter from '@components/Search/Filter/FilterList/PopularityFilter';
 import { calculatePopularityState, checkIsSelectedPopularityState } from '@recoil/filter/filter.selector';
 
 const Observer = ({ onChange }: { onChange: any }) => {

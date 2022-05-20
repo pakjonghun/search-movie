@@ -36,13 +36,13 @@ const VirtualizedItem: FC<props> = ({ children, height, offset = 0, classes }) =
   }, [itemRef, offset]);
 
   return (
-    <li className={joinClass(classes ? classes : '')} ref={setItemRef}>
+    <div className={joinClass(classes ? classes : '')} ref={setItemRef}>
       {isVisible ? (
         <>{children}</>
       ) : (
         <div data-testid="listitem" style={{ height }} className="rounded-md shadow-md bg-slate-50" />
       )}
-    </li>
+    </div>
   );
 };
 export default VirtualizedItem;

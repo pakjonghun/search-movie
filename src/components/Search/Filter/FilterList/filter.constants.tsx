@@ -1,5 +1,5 @@
-import Loading from '@components/Loading';
 import React from 'react';
+import Loading from '@components/Loading';
 import ContentFilter from './ContentFilter';
 import GenreFilter from './GenreFilter';
 import PopularityFilter from './PopularityFilter';

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { joinClass } from '@utils/styleUtil';
 import FilterToggleButton from './Filter/FilterToggleButton';
 import { useRecoilState } from 'recoil';
@@ -8,7 +8,7 @@ interface props {
   classes?: string;
 }
 
-const SearchInput: FC<props> = ({ classes }) => {
+const SearchInput: React.FC<props> = ({ classes }) => {
   const [term, setTerm] = useRecoilState(searchTermState);
 
   const onInputChange = useCallback(
@@ -34,7 +34,7 @@ const SearchInput: FC<props> = ({ classes }) => {
         onChange={onInputChange}
         type="text"
         id="searchTitle"
-        placeholder="Search movie title"
+        placeholder="Search title"
         className="flex-1 p-2 mx-2 bg-transparent text-gray-500 placeholder:text-sm focus:outline-none"
       />
       <FilterToggleButton />

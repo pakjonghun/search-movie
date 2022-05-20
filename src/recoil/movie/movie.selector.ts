@@ -1,37 +1,34 @@
-import { searchTermState } from './../filter/filter.atom';
-import { apis } from './../../api/api';
-import { Movie } from 'api/api.type';
-import { Loadable, selector, selectorFamily, waitForNone } from 'recoil';
-import { MovieItemPayload } from './movie.type';
-import { popularityState, selectedGenreIdsState } from '@recoil/filter/filter.atom';
-import { movieCursorState, movieIdListState } from './movie.atom';
+import { apis } from '@api/api';
+import { Content } from '@api/api.type';
+import { cursorState } from '@recoil/common/atom';
+import { Loadable, selectorFamily, waitForNone } from 'recoil';
 
-export const isLastItemState = selectorFamily<boolean, number>({
-  key: 'isLastItemState',
-  get:
-    (movieId) =>
-    ({ get }) => {
-      const cursor = get(movieCursorState);
-      const movieIdList = get(movieIdListState(cursor));
-      return movieId === movieIdList[movieIdList.length - 1];
-    },
-});
-
-export const movieQuery = selectorFamily<Movie[], number>({
-  key: 'movieQuery',
+export const popularMovieQuery = selectorFamily<Content[], number>({
+  key: 'popularMovieQuery',
   get: (cursor: number) => async () => {
     const movies = (await apis.popularMovies(cursor)) || [];
     return movies;
   },
 });
 
-export const movieListState = selector<Loadable<Movie[]>[]>({
-  key: 'movieListState',
-  get: ({ get }) => {
-    const cursor = get(movieCursorState);
-    const listArray = Array.from(Array(cursor).keys(), (count) => count + 1);
-    return get(waitForNone(listArray.map((count) => movieQuery(count))));
+export const upcomingMovieQuery = selectorFamily<Content[], number>({
+  key: 'upcomingMovieQuery',
+  get: (cursor: number) => async () => {
+    const movies = (await apis.upcomingMovies(cursor)) || [];
+    return movies;
   },
+});
+
+export const movieListState = selectorFamily<Loadable<Content[]>[], string>({
+  key: 'movieListState',
+  get:
+    (path) =>
+    ({ get }) => {
+      const apiFunc = path.includes('popular') ? popularMovieQuery : upcomingMovieQuery;
+      const cursor = get(cursorState(path));
+      const listArray = Array.from(Array(cursor).keys(), (count) => count + 1);
+      return get(waitForNone(listArray.map((count) => apiFunc(count))));
+    },
 });
 
 export const movieVideoQuery = selectorFamily<string[], number>({
@@ -40,92 +37,4 @@ export const movieVideoQuery = selectorFamily<string[], number>({
     const videoKeyList = await apis.movieVideo(movieId);
     return videoKeyList;
   },
-});
-
-export const movieTotlaCursorQuery = selector<number>({
-  key: 'movieTotlaCursorQuery',
-  get: async ({ get }) => {
-    const query = get(searchTermState);
-    const cursor = get(movieCursorState);
-    const totalCursor = await apis.movieTotalCursor(cursor, query || '');
-    return totalCursor || 0;
-  },
-});
-
-export const isMovieListHasNoResult = selector<boolean>({
-  key: 'isMovieListHasNoResult',
-  get: ({ get }) => {
-    const cursor = get(movieCursorState);
-    const filteredList = get(filteredMovieListState(cursor));
-    return filteredList.length === 0;
-  },
-});
-
-export const filteredMovieListState = selectorFamily<Movie[], number>({
-  key: 'movieItemState',
-  get:
-    (cursor) =>
-    ({ get }) => {
-      const searchTerm = get(searchTermState);
-      const popularities = get(popularityState);
-      const genres = get(selectedGenreIdsState);
-      const movies = get(movieQuery(cursor)).filter(({ title, adult, genre_ids, vote_average }) => {
-        const isNotAdult = !adult;
-        const isTitleContain = title.includes(searchTerm);
-        const isGenresContain = checkIsGenresInclude(genre_ids);
-        const isPopularityMatch = checkIsPopularityMatch(vote_average);
-        return isNotAdult && isTitleContain && isGenresContain && isPopularityMatch;
-      });
-
-      function checkIsGenresInclude(genre_ids: number[]) {
-        switch (true) {
-          case genres.length == 0:
-            return true;
-          case genres.length > 0: {
-            const isInclude = genre_ids.some((genreId) => genres.includes(genreId));
-            return isInclude;
-          }
-
-          default:
-            throw new Error('error on movieItemState');
-        }
-      }
-
-      function checkIsPopularityMatch(vote_average: number) {
-        switch (popularities.length) {
-          case 0:
-            return true;
-          case 1:
-            return popularities[0] == vote_average;
-          case 2: {
-            const [min, max] = popularities;
-            return min <= vote_average && vote_average <= max;
-          }
-          default:
-            throw new Error('error on moviesByPopularities');
-        }
-      }
-
-      return movies;
-    },
-});
-
-export const movieItemState = selectorFamily<Movie | undefined, MovieItemPayload>({
-  key: 'movieItemState',
-  get:
-    ({ cursor, id }) =>
-    ({ get }) => {
-      const movieList = get(filteredMovieListState(cursor));
-      return movieList.find(({ id: movieId }) => movieId === id);
-    },
-});
-
-export const movieCountPerCursorState = selectorFamily<number[], number>({
-  key: 'movieCountPerCursorState',
-  get:
-    (cursor) =>
-    ({ get }) => {
-      const movies = get(filteredMovieListState(cursor));
-      return movies.map(({ id }) => id);
-    },
 });

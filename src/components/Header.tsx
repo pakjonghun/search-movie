@@ -7,7 +7,7 @@ interface props {
   canBack: boolean;
 }
 
-const Navigation: FC<props> = ({ title, canBack }) => {
+const Header: FC<props> = ({ title, canBack }) => {
   const navigate = useNavigate();
 
   const onBackClick = useCallback(() => {
@@ -15,15 +15,20 @@ const Navigation: FC<props> = ({ title, canBack }) => {
   }, [navigate]);
 
   return (
-    <nav className={joinClass('sticky top-0 grid p-3 text-gray-50', canBack ? 'grid-cols-3' : '')}>
+    <header
+      className={joinClass(
+        'sticky top-0 grid p-3 text-slate-50 bg-slate-800 shadow-md rounded-sm',
+        canBack ? 'grid-cols-3' : '',
+      )}
+    >
       {canBack && (
         <button onClick={onBackClick} className="w-fit md:text-xl scale-md">
           &larr; back
         </button>
       )}
       <h1 className="text-center text-xl md:text-3xl font-medium first-letter:uppercase">{title}</h1>
-    </nav>
+    </header>
   );
 };
 
-export default Navigation;
+export default Header;

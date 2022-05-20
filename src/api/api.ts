@@ -1,18 +1,10 @@
 import { getFetchByFetch } from './util';
-import { Movie, Response, TV, MovieVideoList } from './api.type';
+import { Content, Response, MovieVideoList } from './api.type';
 import { Genre } from '@recoil/filter/filter.type';
 
 export const apis = {
-  movieIds: async (page: number) => {
-    const { results } = await getFetchByFetch<Response<Movie[]>>({
-      url: '/movie/popular',
-      params: { page },
-    });
-    return results ? results.map(({ id }) => id) : [];
-  },
-
   movieDetail: async (movieId: number) => {
-    const movie = await getFetchByFetch<Movie>({
+    const movie = await getFetchByFetch<Content>({
       url: `/movie/${movieId}`,
     });
     return movie || null;
@@ -22,16 +14,25 @@ export const apis = {
     const { genres } = await getFetchByFetch<{ genres: Genre[] }>({ url: '/genre/list' });
     return genres;
   },
+
   popularMovies: async (page: number) => {
-    const { results } = await getFetchByFetch<Response<Movie[]>>({
+    const { results } = await getFetchByFetch<Response<Content[]>>({
       url: '/movie/popular',
       params: { page },
     });
     return results;
   },
 
+  upcomingMovies: async (page: number) => {
+    const { results } = await getFetchByFetch<Response<Content[]>>({
+      url: '/movie/upcoming',
+      params: { page },
+    });
+    return results;
+  },
+
   popularTVs: async (page: number) => {
-    const { results } = await getFetchByFetch<Response<TV[]>>({
+    const { results } = await getFetchByFetch<Response<Content[]>>({
       url: '/tv/popular',
       params: { page },
     });
@@ -39,14 +40,14 @@ export const apis = {
   },
 
   movieTotalCursor: async (page: number, query: string) => {
-    const { total_pages } = await getFetchByFetch<Response<Movie[]>>({
+    const { total_pages } = await getFetchByFetch<Response<Content[]>>({
       url: '/movie/popular',
       params: { page, query: query || '' },
     });
     return total_pages;
   },
   tvsTotalCursor: async (page: number) => {
-    const { total_pages } = await getFetchByFetch<Response<TV[]>>({
+    const { total_pages } = await getFetchByFetch<Response<Content[]>>({
       url: '/tv/popular',
       params: { page },
     });

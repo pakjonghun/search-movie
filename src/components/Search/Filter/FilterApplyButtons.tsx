@@ -33,7 +33,7 @@ const ApplyButtons = () => {
         onClick={onApply}
         className="px-5 py-2 bg-blue-400 font-medium text-xs scale-md text-gray-50 rounded-md shadow-md"
       >
-        적용
+        확인
       </button>
     </div>
   );
