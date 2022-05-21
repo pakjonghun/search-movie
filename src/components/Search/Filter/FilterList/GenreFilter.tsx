@@ -5,11 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { genresQuery } from '@recoil/filter/filter.selector';
 import useCheckContent from '@hooks/useCheckContent';
 import { useLocation } from 'react-router-dom';
+import { ContentType } from '@recoil/filter/filter.type';
 
 const GenreFilter = () => {
   const content = useCheckContent();
   const { pathname } = useLocation();
-  const genres = useRecoilValue(genresQuery(content));
+  const genres = useRecoilValue(genresQuery(content as ContentType));
   const [selectedGenreIds, setSelectedGenreIds] = useRecoilState(selectedGenreIdsState(pathname));
 
   const onSelectGenre = useCallback(

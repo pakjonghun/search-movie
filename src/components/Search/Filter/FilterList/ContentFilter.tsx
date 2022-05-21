@@ -1,15 +1,34 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { joinClass } from '@utils/styleUtil';
-import { useRecoilCallback } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import useCheckContent from '@hooks/useCheckContent';
 
 const ContentFilter = () => {
   const navigator = useNavigate();
   const content = useCheckContent();
-  const onSwitchClick = useRecoilCallback(({ set, reset }) => (isOn) => {
-    // navigator(`/${content}/search`);
-  });
+  const secondPath = useCheckContent('second');
+
+  const onSwitchClick = useCallback(() => {
+    const first = content == 'tv' ? 'movies' : 'tvs';
+    let second = '';
+
+    switch (secondPath) {
+      case 'upcoming': {
+        second = 'onair';
+        break;
+      }
+      case 'onair': {
+        second = 'upcoming';
+        break;
+      }
+      default: {
+        second = secondPath;
+        break;
+      }
+    }
+
+    navigator(`/${first}/${second}`);
+  }, [content, secondPath, navigator]);
 
   return (
     <label
@@ -32,7 +51,7 @@ const ContentFilter = () => {
           content == 'tv' ? '' : 'translate-x-10',
         )}
       />
-      <input onChange={(event) => onSwitchClick(event.target.checked)} type="checkbox" className="hidden" />
+      <input onChange={onSwitchClick} type="checkbox" className="hidden" />
     </label>
   );
 };
