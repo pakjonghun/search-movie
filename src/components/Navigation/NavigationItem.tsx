@@ -1,5 +1,5 @@
-import { joinClass } from '@utils/styleUtil';
 import React from 'react';
+import { joinClass } from '@utils/styleUtil';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu } from './navigation.type';
 

@@ -25,10 +25,10 @@ export type Content = {
   genres?: Genre[];
 };
 
-type MovieVideo = {
+type Video = {
   key: string;
 };
 
-export type MovieVideoList = {
-  results: MovieVideo[];
+export type VideoList = {
+  results: Video[];
 };

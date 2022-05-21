@@ -19,6 +19,7 @@ const ContentVideo: React.FC<props> = ({ contentTitle }) => {
         {videoKeys.slice(0, 2).map((videoId) => (
           <li key={uuidv4()}>
             <iframe
+              role="document"
               loading="eager"
               title={contentTitle || ''}
               className={'w-full aspect-video'}

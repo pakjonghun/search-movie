@@ -1,5 +1,6 @@
 import { baseURL } from './api.constant';
 import { FetchPayload } from './api.type';
+
 export const urlMaker = ({ url, params = {} }: FetchPayload) => {
   const urlObject = new URLSearchParams();
   urlObject.append('api_key', process.env.REACT_APP_VERCEL_API_KEY);

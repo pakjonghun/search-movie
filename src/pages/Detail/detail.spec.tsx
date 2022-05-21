@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { filterContentState } from '@recoil/filter/filter.atom';
-import { movieItemState, movieVideoQuery } from '@recoil/movie/movie.selector';
+import { movieVideoQuery } from '@recoil/movie/movie.selector';
 import { render, screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import Detail from '.';
+import { HelmetProvider } from 'react-helmet-async';
+import { mockVideo } from './mock/mockData';
 
 function flushPromisesAndTimers(): Promise<void> {
   return act(
@@ -19,14 +20,9 @@ function flushPromisesAndTimers(): Promise<void> {
 
 const Observer = ({ onChange }: { onChange: any }) => {
   const videoKeys = useRecoilValue(movieVideoQuery(1));
-  const { overview, title } = useRecoilValue(movieItemState({ cursor: 1, index: 0 }));
-  const selectedContent = useRecoilValue(filterContentState);
   useEffect(() => {
     onChange(videoKeys);
-    onChange(overview);
-    onChange(title);
-    onChange(selectedContent);
-  }, [onChange, videoKeys, selectedContent, overview, title]);
+  }, [onChange, videoKeys]);
   return null;
 };
 
@@ -36,7 +32,7 @@ jest.mock('react-router-dom', () => {
   return {
     ...realModule,
     useParams: () => ({ id: 1 }),
-    useLocation: () => ({ state: { cursor: 1, index: 0 } }),
+    useLocation: () => ({ state: { contentOverview: 'overview', contentTitle: 'title' } }),
   };
 });
 
@@ -48,31 +44,36 @@ jest.mock('uuid', () => {
   };
 });
 
-describe('detail test', () => {
-  it('should', async () => {
-    //@ts-ignore
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ results: [{ title: 'title', name: 'name', overview: 'overview' }] }),
-      }),
-    );
+//@ts-ignore
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve(mockVideo),
+  }),
+);
 
+describe('detail test', () => {
+  it('should render mock data', async () => {
     render(
       <RecoilRoot>
-        <BrowserRouter>
-          <React.Suspense fallback={<div>Loading</div>}>
-            <Observer onChange={() => jest.fn()} />
-            <Detail />
-          </React.Suspense>
-        </BrowserRouter>
+        <HelmetProvider>
+          <BrowserRouter>
+            <React.Suspense fallback={<div>Loading</div>}>
+              <Observer onChange={() => jest.fn()} />
+              <Detail />
+            </React.Suspense>
+          </BrowserRouter>
+        </HelmetProvider>
       </RecoilRoot>,
     );
 
     await flushPromisesAndTimers();
 
+    screen.getByRole('button', { name: /back/, exact: false });
+
     screen.getByText('overview');
-    screen.getByText('name');
-    screen.getByText('No Video Information');
+    screen.getByText('title');
+    const videos = screen.getAllByRole('document');
+    expect(videos.length).toBe(2);
   });
 });
 

@@ -1,6 +1,6 @@
 import { ContentType, Genre, ProgressWithArgs } from '@recoil/filter/filter.type';
 import { apis } from '@api/api';
-import { DefaultValue, selector, selectorFamily, constSelector } from 'recoil';
+import { DefaultValue, selectorFamily, constSelector } from 'recoil';
 import { PopularityProgressBarType, CheckIsSelectedPopularityArgs } from './filter.type';
 import { BarStyle, popularityState } from './filter.atom';
 import { progressStyle } from './filter.constant';
