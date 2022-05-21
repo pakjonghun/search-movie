@@ -43,11 +43,15 @@ const ContentItem: React.FC<props> = ({ contentItem }) => {
   const isMatch = isNotAdult && isTitleContain && isGenresContain && isPopularityMatch;
   const content = useCheckContent();
   return (
-    <Link to={`/${content}s/${contentId}`} state={{ contentOverview: overview, contentTitle }}>
+    <Link
+      className={joinClass(isMatch ? '' : 'pointer-events-none')}
+      to={isMatch ? `/${content}s/${contentId}` : '#'}
+      state={{ contentOverview: overview, contentTitle }}
+    >
       <div
         className={joinClass(
           'flex space-x-2  bg-gray-50 shadow-md h-40 border-[1px] rounded-md scale-md overflow-hidden cursor-pointer',
-          isMatch ? '' : 'blur-sm',
+          isMatch ? '' : 'opacity-30',
         )}
       >
         <img
