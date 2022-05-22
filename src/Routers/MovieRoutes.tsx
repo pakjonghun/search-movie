@@ -1,19 +1,55 @@
+import Loading from '@components/Loading';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Popular from '@pages/Movies/Popular';
-import Upcoming from '@pages/Movies/Upcoming';
-import Search from '@pages/Movies/Search';
-import Detail from '@pages/Detail';
-import NotFound from '@components/NotFound';
+const Popular = React.lazy(() => import('@pages/Movies/Popular'));
+const Upcoming = React.lazy(() => import('@pages/Movies/Upcoming'));
+const Search = React.lazy(() => import('@pages/Movies/Search'));
+const Detail = React.lazy(() => import('@pages/Detail'));
+const NotFound = React.lazy(() => import('@components/NotFound'));
 
 const MovieRoutes = () => {
   return (
     <Routes>
-      <Route path="popular" element={<Popular />} />
-      <Route path="upcoming" element={<Upcoming />} />
-      <Route path="search" element={<Search />} />
-      <Route path=":id" element={<Detail />} />
-      <Route path="*" element={<NotFound />} />
+      <Route
+        path="popular"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <Popular />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="upcoming"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <Upcoming />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="search"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <Search />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path=":id"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <Detail />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <NotFound />
+          </React.Suspense>
+        }
+      />
     </Routes>
   );
 };

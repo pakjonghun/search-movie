@@ -1,19 +1,55 @@
+import Loading from '@components/Loading';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Popular from '@pages/TVs/Popular';
-import Onair from '@pages/TVs/OnAir';
-import Detail from '@pages/Detail';
-import NotFound from '@components/NotFound';
-import SearchTV from '@pages/TVs/Search';
+const Popular = React.lazy(() => import('@pages/TVs/Popular'));
+const Onair = React.lazy(() => import('@pages/TVs/OnAir'));
+const Detail = React.lazy(() => import('@pages/Detail'));
+const SearchTV = React.lazy(() => import('@pages/TVs/Search'));
+const NotFound = React.lazy(() => import('@components/NotFound'));
 
 const TVRoutes = () => {
   return (
     <Routes>
-      <Route path="onair" element={<Onair />} />
-      <Route path="popular" element={<Popular />} />
-      <Route path="search" element={<SearchTV />} />
-      <Route path=":id" element={<Detail />} />
-      <Route path="*" element={<NotFound />} />
+      <Route
+        path="onair"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <Onair />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="popular"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <Popular />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="search"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <SearchTV />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path=":id"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <Detail />
+          </React.Suspense>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <React.Suspense fallback={<Loading classes="h-screen" />}>
+            <NotFound />
+          </React.Suspense>
+        }
+      />
     </Routes>
   );
 };

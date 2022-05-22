@@ -36,11 +36,12 @@ const FilterList: React.FC<props> = ({ index, contentList }) => {
           <ContentItem contentItem={contentItem} key={contentItem.id} />
         </VirtualizedItem>
       ))}
-      {isLastCursor && (
+      {Boolean(contentList.length) && isLastCursor && (
         <div ref={ref} className="absolute bottom-0 inset-x-0">
           <Loading />
         </div>
       )}
+      {Boolean(!contentList.length) && <div>검색 결과가 없습니다.</div>}
     </li>
   );
 };
