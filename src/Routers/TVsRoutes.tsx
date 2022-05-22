@@ -1,5 +1,5 @@
-import Loading from '@components/Loading';
 import React from 'react';
+import Loading from '@components/Loading';
 import { Route, Routes } from 'react-router-dom';
 const Popular = React.lazy(() => import('@pages/TVs/Popular'));
 const OnAir = React.lazy(() => import('@pages/TVs/OnAir'));
