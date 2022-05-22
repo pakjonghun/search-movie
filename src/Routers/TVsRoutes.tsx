@@ -1,8 +1,8 @@
 import Loading from '@components/Loading';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-const Popular = React.lazy(() => import('../pages/TVs/Popular'));
-const Onair = React.lazy(() => import('../pages/TVs/OnAir'));
+const Popular = React.lazy(() => import('@pages/TVs/Popular'));
+const OnAir = React.lazy(() => import('@pages/TVs/OnAir'));
 const Detail = React.lazy(() => import('@pages/Detail'));
 const SearchTV = React.lazy(() => import('@pages/TVs/Search'));
 const NotFound = React.lazy(() => import('@components/NotFound'));
@@ -14,7 +14,7 @@ const TVRoutes = () => {
         path="onair"
         element={
           <React.Suspense fallback={<Loading classes="h-screen" />}>
-            <Onair />
+            <OnAir />
           </React.Suspense>
         }
       />
