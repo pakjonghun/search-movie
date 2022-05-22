@@ -1,3 +1,4 @@
+import { mockPath } from '../../components/MainLayout/Filter/mock/mockData';
 import { snapshot_UNSTABLE } from 'recoil';
 import { popularityState } from './filter.atom';
 import { progressStyle } from './filter.constant';
@@ -7,10 +8,10 @@ describe('filter test', () => {
   it('progressWidthState test', () => {
     for (let min = 1; min < 10; min++) {
       for (let max = 10; max >= 0; max--) {
-        const snapShot = snapshot_UNSTABLE(({ set }) => set(popularityState, [min, max]));
-        const baseWidth = snapShot.getLoadable(progressWidthState('base'));
-        const hideWidth = snapShot.getLoadable(progressWidthState('hide'));
-        const percentWidth = snapShot.getLoadable(progressWidthState('percent'));
+        const snapShot = snapshot_UNSTABLE(({ set }) => set(popularityState(mockPath), [min, max]));
+        const baseWidth = snapShot.getLoadable(progressWidthState({ barType: 'base', path: mockPath }));
+        const hideWidth = snapShot.getLoadable(progressWidthState({ barType: 'hide', path: mockPath }));
+        const percentWidth = snapShot.getLoadable(progressWidthState({ barType: 'percent', path: mockPath }));
         expect(baseWidth.valueOrThrow()).toBe('100%');
         expect(hideWidth.valueOrThrow()).toBe(`${caculateWidth(min)}%`);
         expect(percentWidth.valueOrThrow()).toBe(`${caculateWidth(max)}%`);

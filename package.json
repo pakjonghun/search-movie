@@ -7,7 +7,7 @@
     "start:dev": "webpack serve --config webpack.config.dev.js",
     "build": "webpack --config webpack.config.prod.js",
     "test": "jest --watch ----verbose",
-    "test:cov": "npm test -- --coverage"
+    "test:cov": "jest --coverage"
   },
   "repository": {
     "type": "git",

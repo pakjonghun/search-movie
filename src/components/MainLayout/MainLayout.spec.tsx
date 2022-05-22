@@ -36,7 +36,7 @@ describe('header', () => {
     );
 
     screen.getByRole('heading', { name: headerProps.title });
-    screen.getByRole('button', { name: /back/i });
+    const backButton = screen.getByRole('button', { name: /back/i });
   });
 
   it('should have canBack style', () => {
@@ -117,6 +117,53 @@ describe('mainLayout', () => {
     userEvent.click(filterButton);
     for (const title of ['컨텐츠', '평 점', '장 르']) {
       await screen.findByText(title);
+    }
+  });
+
+  it('should cancel or apply filter', async () => {
+    render(
+      <RecoilRoot>
+        <HelmetProvider>
+          <BrowserRouter>
+            <MainLayoutObserver onChange={jest.fn()} />
+            <MainLayout title="title">
+              <div></div>
+            </MainLayout>
+          </BrowserRouter>
+        </HelmetProvider>
+      </RecoilRoot>,
+    );
+
+    await flushPromisesAndTimers();
+
+    const filterButton = screen.getByRole('button', { name: 'Filter' });
+    userEvent.click(filterButton);
+
+    const cancelButton = await screen.findByRole('button', { name: '취소' });
+
+    userEvent.click(cancelButton);
+    for (const title of ['컨텐츠', '평 점', '장 르']) {
+      await waitFor(() => {
+        const contentTitle = screen.queryByText(title);
+        expect(contentTitle).not.toBeInTheDocument();
+      });
+    }
+
+    userEvent.click(filterButton);
+    for (const title of ['컨텐츠', '평 점', '장 르']) {
+      await waitFor(() => {
+        const contentTitle = screen.queryByText(title);
+        expect(contentTitle).toBeInTheDocument();
+      });
+    }
+
+    const confirmButton = await screen.findByRole('button', { name: '확인' });
+    userEvent.click(confirmButton);
+    for (const title of ['컨텐츠', '평 점', '장 르']) {
+      await waitFor(() => {
+        const contentTitle = screen.queryByText(title);
+        expect(contentTitle).not.toBeInTheDocument();
+      });
     }
   });
 });

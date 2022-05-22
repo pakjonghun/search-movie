@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
 import ContentFilter from './ContentFilter';
 import userEvent from '@testing-library/user-event';
@@ -54,8 +54,12 @@ describe('genreFilter', () => {
     for (const { name } of mockGenres) {
       const button = await screen.findByRole('checkbox', { name });
       userEvent.click(button);
-      await screen.findByText('✓');
-      userEvent.click(button);
+      const checked = await screen.findByText('✓');
+      userEvent.click(checked);
+      await waitFor(() => {
+        const genre = screen.queryByText('✓');
+        expect(genre).not.toBeInTheDocument();
+      });
     }
   });
 });

@@ -19,10 +19,9 @@ const FilterList: React.FC<props> = ({ index, contentList }) => {
   const isLastCursor = cursor - 1 === index;
 
   const onScroll: IntersectionObserverCallback = useCallback(
-    (extras, observer) => {
+    (extras) => {
       if (extras[0].isIntersecting) {
         setCursor((pre) => pre + 1);
-        observer.unobserve(extras[0].target);
       }
     },
     [setCursor],
