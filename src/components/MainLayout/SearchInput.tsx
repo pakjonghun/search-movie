@@ -22,6 +22,7 @@ const SearchInput: React.FC<props> = ({ classes }) => {
 
   return (
     <label
+      data-testId="searchInput"
       htmlFor="searchTitle"
       className={joinClass(
         'flex items-center w-full mx-auto mt-5 px-2 rounded-sm shadow-sm bg-gray-200 border-[1px] border-gray-300 ring-gray-300 focus-within:ring-1',

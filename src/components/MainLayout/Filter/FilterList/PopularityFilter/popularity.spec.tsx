@@ -1,16 +1,18 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
 import PopularityFilter from '@components/MainLayout/Filter/FilterList/PopularityFilter';
 import { PopularityFilterObserver } from '../../mock/mockRecoil';
 import { BrowserRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import { check } from 'prettier';
 
 jest.mock('uuid', () => ({
   v4: () => Math.random().toString(35).substring(3, 35),
 }));
 
 describe('popularity test', () => {
-  it('should have indicator', () => {
+  it('should have indicator', async () => {
     render(
       <RecoilRoot>
         <BrowserRouter>

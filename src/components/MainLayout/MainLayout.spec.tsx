@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import MainLayout from '.';
 import { BrowserRouter } from 'react-router-dom';
 import Header from './Header';
@@ -78,16 +78,25 @@ describe('title', () => {
 });
 
 describe('searchInput', () => {
-  it('should have Filter in SearchInput', () => {
+  it('should have Filter in SearchInput with classes', async () => {
     render(
       <RecoilRoot>
         <BrowserRouter>
           <SearchInputObserver onChange={jest.fn()} />
-          <SearchInput />
+          <SearchInput classes="classes" />
         </BrowserRouter>
       </RecoilRoot>,
     );
     screen.getByRole('button', { name: 'Filter' });
+    const inputBox = screen.getByRole('textbox');
+
+    fireEvent.change(inputBox, { target: { value: 'test' } });
+
+    const changedInput = await screen.findByRole('textbox');
+    expect(changedInput).toHaveValue('test');
+
+    const label = screen.getByTestId('searchInput');
+    expect(label).toHaveClass('classes');
   });
 });
 
