@@ -1,3 +1,7 @@
+//컴포넌트가 많을 경우 랜더링 횟수가 늘어나서 성능이 나빠지는 문제를 windowing 기법을 사용해서 해결 해 본 코드 입니다.
+//라이브러리를 사용하지 않고 javascript api 로 작성을 해서(라이브러리 소스코드를 참고함) 기억에 남는 코드라서 제출합니다.
+
+
 import React, { FC, useEffect, useState } from 'react';
 import { joinClass } from '@utils/styleUtil';
 
